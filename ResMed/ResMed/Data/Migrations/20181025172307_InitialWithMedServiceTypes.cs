@@ -3,12 +3,12 @@ using Microsoft.EntityFrameworkCore.Migrations;
 
 namespace ResMed.Data.Migrations
 {
-    public partial class InitialWithMedServiceTypes : Migration
+    public partial class InitialWithVisitTypes : Migration
     {
         protected override void Up(MigrationBuilder migrationBuilder)
         {
             migrationBuilder.CreateTable(
-                name: "MedServiceTypes",
+                name: "VisitTypes",
                 columns: table => new
                 {
                     Id = table.Column<int>(nullable: false)
@@ -17,14 +17,14 @@ namespace ResMed.Data.Migrations
                 },
                 constraints: table =>
                 {
-                    table.PrimaryKey("PK_MedServiceTypes", x => x.Id);
+                    table.PrimaryKey("PK_VisitTypes", x => x.Id);
                 });
         }
 
         protected override void Down(MigrationBuilder migrationBuilder)
         {
             migrationBuilder.DropTable(
-                name: "MedServiceTypes");
+                name: "VisitTypes");
         }
     }
 }

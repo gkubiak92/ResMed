@@ -14,6 +14,6 @@ namespace ResMed.Data
         {
         }
 
-        public DbSet<MedServiceTypes> MedServiceTypes { get; set; }
+        public DbSet<VisitTypes> VisitTypes { get; set; }
     }
 }

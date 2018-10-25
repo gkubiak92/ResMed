@@ -10,8 +10,8 @@ using ResMed.Data;
 namespace ResMed.Data.Migrations
 {
     [DbContext(typeof(ApplicationDbContext))]
-    [Migration("20181025172307_InitialWithMedServiceTypes")]
-    partial class InitialWithMedServiceTypes
+    [Migration("20181025172307_InitialWithVisitTypes")]
+    partial class InitialWithVisitTypes
     {
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
@@ -186,7 +186,7 @@ namespace ResMed.Data.Migrations
                     b.ToTable("AspNetUserTokens");
                 });
 
-            modelBuilder.Entity("ResMed.Models.MedServiceTypes", b =>
+            modelBuilder.Entity("ResMed.Models.VisitTypes", b =>
                 {
                     b.Property<int>("Id")
                         .ValueGeneratedOnAdd()
@@ -197,7 +197,7 @@ namespace ResMed.Data.Migrations
 
                     b.HasKey("Id");
 
-                    b.ToTable("MedServiceTypes");
+                    b.ToTable("VisitTypes");
                 });
 
             modelBuilder.Entity("Microsoft.AspNetCore.Identity.IdentityRoleClaim<string>", b =>

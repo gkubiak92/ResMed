@@ -9,18 +9,18 @@ using ResMed.Models;
 namespace ResMed.Areas.Admin.Controllers
 {
     [Area("Admin")]
-    public class MedServiceTypesController : Controller
+    public class VisitTypesController : Controller
     {
         private readonly ApplicationDbContext _db;
 
-        public MedServiceTypesController(ApplicationDbContext db)
+        public VisitTypesController(ApplicationDbContext db)
         {
             _db = db;
         }
 
         public IActionResult Index()
         {
-            return View(_db.MedServiceTypes.ToList());
+            return View(_db.VisitTypes.ToList());
         }
 
         //GET - CREATE
@@ -32,16 +32,16 @@ namespace ResMed.Areas.Admin.Controllers
         //POST - CREATE
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Create(MedServiceTypes medServiceTypes)
+        public async Task<IActionResult> Create(VisitTypes VisitTypes)
         {
             if (ModelState.IsValid)
             {
-                _db.Add(medServiceTypes);
+                _db.Add(VisitTypes);
                 await _db.SaveChangesAsync();
                 return RedirectToAction(nameof(Index));
             }
 
-            return View(medServiceTypes);
+            return View(VisitTypes);
         }
 
 
@@ -53,7 +53,7 @@ namespace ResMed.Areas.Admin.Controllers
                 return NotFound();
             }
 
-            var medServiceType = await _db.MedServiceTypes.FindAsync(id);
+            var medServiceType = await _db.VisitTypes.FindAsync(id);
             if (medServiceType == null)
             {
                 return NotFound();
@@ -65,21 +65,21 @@ namespace ResMed.Areas.Admin.Controllers
         //POST - EDIT
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Edit(int id, MedServiceTypes medServiceTypes)
+        public async Task<IActionResult> Edit(int id, VisitTypes VisitTypes)
         {
-            if (id != medServiceTypes.Id)
+            if (id != VisitTypes.Id)
             {
                 return NotFound();
             }
 
             if (ModelState.IsValid)
             {
-                _db.Update(medServiceTypes);
+                _db.Update(VisitTypes);
                 await _db.SaveChangesAsync();
                 return RedirectToAction(nameof(Index));
             }
 
-            return View(medServiceTypes);
+            return View(VisitTypes);
         }
 
 
@@ -91,7 +91,7 @@ namespace ResMed.Areas.Admin.Controllers
                 return NotFound();
             }
 
-            var medServiceType = await _db.MedServiceTypes.FindAsync(id);
+            var medServiceType = await _db.VisitTypes.FindAsync(id);
             if (medServiceType == null)
             {
                 return NotFound();
@@ -109,7 +109,7 @@ namespace ResMed.Areas.Admin.Controllers
                 return NotFound();
             }
 
-            var medServiceType = await _db.MedServiceTypes.FindAsync(id);
+            var medServiceType = await _db.VisitTypes.FindAsync(id);
             if (medServiceType == null)
             {
                 return NotFound();
@@ -123,8 +123,8 @@ namespace ResMed.Areas.Admin.Controllers
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> Delete(int id)
         {
-            var medServiceTypes = await _db.MedServiceTypes.FindAsync(id);
-            _db.MedServiceTypes.Remove(medServiceTypes);
+            var VisitTypes = await _db.VisitTypes.FindAsync(id);
+            _db.VisitTypes.Remove(VisitTypes);
             await _db.SaveChangesAsync();
             return RedirectToAction(nameof(Index));
         }

@@ -6,7 +6,7 @@ using System.Threading.Tasks;
 
 namespace ResMed.Models
 {
-    public class MedServiceTypes
+    public class VisitTypes
     {
         public int Id { get; set; }
         [Required]
