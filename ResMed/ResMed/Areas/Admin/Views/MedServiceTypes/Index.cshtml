@@ -1,16 +1,14 @@
 ﻿@model IEnumerable<ResMed.Models.MedServiceTypes>
 
 @{
-    Layout = "_Layout";
-}
-@{
-    ViewData["Title"] = "Index";
+    ViewData["Title"] = "Typy usług medycznych";
+    Layout = "~/Views/Shared/_Layout.cshtml";
 }
 
-<h2>Index</h2>
+<h2>Typy usług medycznych</h2>
 
 <p>
-    <a asp-action="Create">Create New</a>
+    <a asp-action="Create">Utwórz nową</a>
 </p>
 <table class="table">
     <thead>
@@ -22,18 +20,17 @@
         </tr>
     </thead>
     <tbody>
-        @foreach (var item in Model)
-        {
-            <tr>
-                <td>
-                    @Html.DisplayFor(modelItem => item.Name)
-                </td>
-                <td>
-                    <a asp-action="Edit" asp-route-id="@item.Id">Edit</a> |
-                    <a asp-action="Details" asp-route-id="@item.Id">Details</a> |
-                    <a asp-action="Delete" asp-route-id="@item.Id">Delete</a>
-                </td>
-            </tr>
-        }
+@foreach (var item in Model) {
+        <tr>
+            <td>
+                @Html.DisplayFor(modelItem => item.Name)
+            </td>
+            <td>
+                <a asp-action="Edit" asp-route-id="@item.Id">Edytuj</a> |
+                <a asp-action="Details" asp-route-id="@item.Id">Szczegóły</a> |
+                <a asp-action="Delete" asp-route-id="@item.Id">Usuń</a>
+            </td>
+        </tr>
+}
     </tbody>
 </table>
