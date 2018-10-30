@@ -36,7 +36,7 @@ namespace ResMed.Areas.Admin.Controllers
         {
             if (ModelState.IsValid)
             {
-                _db.Add(VisitTypes);
+                _db.VisitTypes.Add(VisitTypes);
                 await _db.SaveChangesAsync();
                 return RedirectToAction(nameof(Index));
             }

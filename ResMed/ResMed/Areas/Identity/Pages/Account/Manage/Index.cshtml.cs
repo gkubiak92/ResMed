@@ -8,8 +8,11 @@ using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Identity.UI.Services;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.RazorPages;
+using Microsoft.AspNetCore.Mvc.Rendering;
 using ResMed.Data;
+using ResMed.Models;
 using ResMed.Utility;
+using ResMed.Extensions;
 
 namespace ResMed.Areas.Identity.Pages.Account.Manage
 {
@@ -32,6 +35,7 @@ namespace ResMed.Areas.Identity.Pages.Account.Manage
             _db = db;
         }
 
+        [Display(Name = "Nazwa użytkownika")]
         public string Username { get; set; }
 
         public bool IsEmailConfirmed { get; set; }
@@ -46,6 +50,7 @@ namespace ResMed.Areas.Identity.Pages.Account.Manage
         {
             [Required]
             [EmailAddress]
+            [Display(Name = "E-mail")]
             public string Email { get; set; }
 
             [Phone]
@@ -60,7 +65,16 @@ namespace ResMed.Areas.Identity.Pages.Account.Manage
             [Display(Name = "Opis")]
             public string Description { get; set; }
 
+            [Display(Name = "Specjalizacja")]
+            public int? SpecializationId { get; set; }
+
+            //public SelectList selectListSpec { get; set; }
+
+
+
+
         }
+
 
         public async Task<IActionResult> OnGetAsync()
         {
@@ -76,18 +90,36 @@ namespace ResMed.Areas.Identity.Pages.Account.Manage
 
             Username = userName;
 
+
+
             if (User.IsInRole(SD.DoctorRole)) //sprawdza czy zalogowany uzytkownik jest doktorem, jesli tak to rozszerza model Input o dodatkowe pola Doktora
             {
-                var doctor = GetActualLoggedDoctorFromDb(user);
+                var doctor = GetActualLoggedDoctorFromDb(user); // pobiera obiekt aktualnego doktora z bazy danych
+
                 Input = new InputModel
                 {
                     Email = email,
                     PhoneNumber = phoneNumber,
                     LicenseNr = doctor.LicenseNr,
-                    Description = doctor.Description
+                    Description = doctor.Description,
+                    SpecializationId = doctor.SpecializationId
                 };
+
+                var specList = _db.Specializations.ToList().OrderBy(s => s.Name); //zaciąga listę specjalizacji z bazy danych
+                var specs = new List<SelectListItem>();  //tworzy nową listę typu selectlistitem - itemy do wybierania
+                foreach (var item in specList) //pętla, która leci po wszystkich itemach listy specjlizacji i przypisuje je kolejno do itemów listy selectlist
+                {
+                    specs.Add(new SelectListItem
+                    {
+                        Text = item.Name,
+                        Value = item.Id.ToString()
+                    });
+                };
+
+                ViewData["SpecializationsList"] = specs; //Lista typu SelectListItem wrzucana do ViewData aby móc ją przechwycic w stronie Razor Index.cshtml
+
             }
-            else if (User.IsInRole(SD.PatientRole))
+            else if (User.IsInRole(SD.PatientRole)) //sprawdza czy zalogowany uzytkownik jest pacjentem, jesli tak to rozszerza model Input o dodatkowe pola Pacjenta
             {
                 var patient = GetActualLoggedPatientFromDb(user);
                 Input = new InputModel
@@ -165,12 +197,19 @@ namespace ResMed.Areas.Identity.Pages.Account.Manage
                     await _db.SaveChangesAsync();
                 }
 
+                if (Input.SpecializationId != doctor.SpecializationId)
+                {
+                    doctor.SpecializationId = Input.SpecializationId;
+                    _db.Doctors.Update(doctor);
+                    await _db.SaveChangesAsync();
+                }
+
             }
 
             if (User.IsInRole(SD.PatientRole))
             {
                 var patient = GetActualLoggedPatientFromDb(user); //pobieranie obiektu zalogowanego doktora z bazy danych
-                
+
                 if (Input.Description != patient.Description)
                 {
                     patient.Description = Input.Description;
