@@ -56,23 +56,6 @@ namespace ResMed.Areas.Identity.Pages.Account.Manage
             [Phone]
             [Display(Name = "Nr telefonu")]
             public string PhoneNumber { get; set; }
-
-
-            //Pola dodatkowe Input dla Doktora
-            [Display(Name = "Nr licencji")]
-            public string LicenseNr { get; set; }
-
-            [Display(Name = "Opis")]
-            public string Description { get; set; }
-
-            [Display(Name = "Specjalizacja")]
-            public int? SpecializationId { get; set; }
-
-            //public SelectList selectListSpec { get; set; }
-
-
-
-
         }
 
 
@@ -89,54 +72,12 @@ namespace ResMed.Areas.Identity.Pages.Account.Manage
             var phoneNumber = await _userManager.GetPhoneNumberAsync(user);
 
             Username = userName;
-
-
-
-            if (User.IsInRole(SD.DoctorRole)) //sprawdza czy zalogowany uzytkownik jest doktorem, jesli tak to rozszerza model Input o dodatkowe pola Doktora
+            
+            Input = new InputModel
             {
-                var doctor = GetActualLoggedDoctorFromDb(user); // pobiera obiekt aktualnego doktora z bazy danych
-
-                Input = new InputModel
-                {
-                    Email = email,
-                    PhoneNumber = phoneNumber,
-                    LicenseNr = doctor.LicenseNr,
-                    Description = doctor.Description,
-                    SpecializationId = doctor.SpecializationId
-                };
-
-                var specList = _db.Specializations.ToList().OrderBy(s => s.Name); //zaciąga listę specjalizacji z bazy danych
-                var specs = new List<SelectListItem>();  //tworzy nową listę typu selectlistitem - itemy do wybierania
-                foreach (var item in specList) //pętla, która leci po wszystkich itemach listy specjlizacji i przypisuje je kolejno do itemów listy selectlist
-                {
-                    specs.Add(new SelectListItem
-                    {
-                        Text = item.Name,
-                        Value = item.Id.ToString()
-                    });
-                };
-
-                ViewData["SpecializationsList"] = specs; //Lista typu SelectListItem wrzucana do ViewData aby móc ją przechwycic w stronie Razor Index.cshtml
-
-            }
-            else if (User.IsInRole(SD.PatientRole)) //sprawdza czy zalogowany uzytkownik jest pacjentem, jesli tak to rozszerza model Input o dodatkowe pola Pacjenta
-            {
-                var patient = GetActualLoggedPatientFromDb(user);
-                Input = new InputModel
-                {
-                    Email = email,
-                    PhoneNumber = phoneNumber,
-                    Description = patient.Description
-                };
-            }
-            else
-            {
-                Input = new InputModel
-                {
-                    Email = email,
-                    PhoneNumber = phoneNumber
-                };
-            }
+                Email = email,
+                PhoneNumber = phoneNumber
+            };
 
             IsEmailConfirmed = await _userManager.IsEmailConfirmedAsync(user);
 
@@ -177,53 +118,11 @@ namespace ResMed.Areas.Identity.Pages.Account.Manage
                     throw new InvalidOperationException($"Unexpected error occurred setting phone number for user with ID '{userId}'.");
                 }
             }
-
-
-            if (User.IsInRole(SD.DoctorRole))
-            {
-                var doctor = GetActualLoggedDoctorFromDb(user); //pobieranie obiektu zalogowanego doktora z bazy danych
-
-                if (Input.LicenseNr != doctor.LicenseNr)
-                {
-                    doctor.LicenseNr = Input.LicenseNr;
-                    _db.Doctors.Update(doctor);
-                    await _db.SaveChangesAsync();
-                }
-
-                if (Input.Description != doctor.Description)
-                {
-                    doctor.Description = Input.Description;
-                    _db.Doctors.Update(doctor);
-                    await _db.SaveChangesAsync();
-                }
-
-                if (Input.SpecializationId != doctor.SpecializationId)
-                {
-                    doctor.SpecializationId = Input.SpecializationId;
-                    _db.Doctors.Update(doctor);
-                    await _db.SaveChangesAsync();
-                }
-
-            }
-
-            if (User.IsInRole(SD.PatientRole))
-            {
-                var patient = GetActualLoggedPatientFromDb(user); //pobieranie obiektu zalogowanego doktora z bazy danych
-
-                if (Input.Description != patient.Description)
-                {
-                    patient.Description = Input.Description;
-                    _db.Patients.Update(patient);
-                    await _db.SaveChangesAsync();
-                }
-
-            }
+            
             await _signInManager.RefreshSignInAsync(user);
-            StatusMessage = "Your profile has been updated";
+            StatusMessage = "Twój profil został zaktualizowany";
             return RedirectToPage();
-
-
-
+            
         }
 
 
@@ -258,18 +157,6 @@ namespace ResMed.Areas.Identity.Pages.Account.Manage
             StatusMessage = "Verification email sent. Please check your email.";
             return RedirectToPage();
         }
-
-        /////////Metody///////////////
-
-        private Models.Doctors GetActualLoggedDoctorFromDb(IdentityUser user)
-        {
-            return _db.Doctors.FirstOrDefault(x => x.UserId == user.Id);
-        }
-
-
-        private Models.Patients GetActualLoggedPatientFromDb(IdentityUser user)
-        {
-            return _db.Patients.FirstOrDefault(p => p.UserId == user.Id);
-        }
+        
     }
 }

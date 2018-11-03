@@ -31,5 +31,8 @@ namespace ResMed.Models
 
         [ForeignKey("SpecializationId")]
         public virtual Specializations Specializations { get; set; }
+
+        [Display(Name = "Adres")]
+        public string Address { get; set; }
     }
 }

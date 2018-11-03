@@ -1,14 +1,19 @@
 ﻿@inject SignInManager<IdentityUser> SignInManager
+@using ResMed.Utility;
 @{
     var hasExternalLogins = (await SignInManager.GetExternalAuthenticationSchemesAsync()).Any();
 }
 <ul class="nav nav-pills nav-stacked">
-    <li class="@ManageNavPages.IndexNavClass(ViewContext)"><a asp-page="./Index">Profil</a></li>
-    <li class="@ManageNavPages.ChangePasswordNavClass(ViewContext)"><a id="change-password" asp-page="./ChangePassword">Hasło</a></li>
+    <li class="@ManageNavPages.IndexNavClass(ViewContext)"><a asp-page="./Index">Konto</a></li>
     @if (hasExternalLogins)
     {
         <li class="@ManageNavPages.ExternalLoginsNavClass(ViewContext)"><a id="external-login" asp-page="./ExternalLogins">Loginy zewnętrzne</a></li>
     }
+    @if (User.IsInRole(SD.DoctorRole))
+    {
+        <li class="@ManageNavPages.DoctorCartNavClass(ViewContext)"><a asp-page="./DoctorCart">Karta doktora</a></li>
+    }
+    <li class="@ManageNavPages.ChangePasswordNavClass(ViewContext)"><a id="change-password" asp-page="./ChangePassword">Hasło</a></li>
     <li class="@ManageNavPages.TwoFactorAuthenticationNavClass(ViewContext)"><a asp-page="./TwoFactorAuthentication">Uwierzytelnianie dwuskładnikowe</a></li>
     <li class="@ManageNavPages.PersonalDataNavClass(ViewContext)"><a asp-page="./PersonalData">Dane osobowe</a></li>
 </ul>
