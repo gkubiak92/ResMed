@@ -45,12 +45,21 @@ namespace ResMed.Areas.Identity.Pages.Account.Manage
 
         public class InputModel
         {
+
+            [Display(Name = "Imię")]
+            public string FirstName { get; set; }
+
+
+            [Display(Name = "Nazwisko")]
+            public string LastName { get; set; }
+
             [Phone]
             [Display(Name = "Nr telefonu")]
             public string PhoneNumber { get; set; }
 
 
             //Pola dodatkowe Input dla Doktora
+            [Required(ErrorMessage ="Pole wymagane")]
             [Display(Name = "Nr licencji")]
             public string LicenseNr { get; set; }
 
@@ -62,6 +71,13 @@ namespace ResMed.Areas.Identity.Pages.Account.Manage
 
             [Display(Name = "Adres")]
             public string Address { get; set; }
+
+
+            [Display(Name = "Start pracy")]
+            public DateTime StartWorkHours { get; set; }
+
+            [Display(Name = "Koniec pracy")]
+            public DateTime EndWorkHours { get; set; }
 
         }
 
@@ -94,6 +110,8 @@ namespace ResMed.Areas.Identity.Pages.Account.Manage
 
             Input = new InputModel
             {
+                FirstName = doctor.FirstName,
+                LastName = doctor.LastName,
                 PhoneNumber = phoneNumber,
                 LicenseNr = doctor.LicenseNr,
                 Description = doctor.Description,
@@ -129,6 +147,20 @@ namespace ResMed.Areas.Identity.Pages.Account.Manage
             }
 
             var doctor = GetActualLoggedDoctorFromDb(user); //pobieranie obiektu zalogowanego doktora z bazy danych
+
+            if (Input.FirstName != doctor.FirstName)
+            {
+                doctor.FirstName = Input.FirstName;
+                _db.Doctors.Update(doctor);
+                await _db.SaveChangesAsync();
+            }
+
+            if (Input.LastName != doctor.LastName)
+            {
+                doctor.LastName = Input.LastName;
+                _db.Doctors.Update(doctor);
+                await _db.SaveChangesAsync();
+            }
 
             if (Input.LicenseNr != doctor.LicenseNr)
             {

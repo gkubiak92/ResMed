@@ -89,15 +89,13 @@ namespace ResMed.Areas.Identity.Pages.Account
 
         public async Task<IActionResult> OnPostAsync(string returnUrl = null)
         {
-            returnUrl = returnUrl ?? Url.Content("~/Identity/Account/Manage/DoctorCart");
+            returnUrl = returnUrl ?? Url.Content("~/Identity/Account/Manage");
             if (ModelState.IsValid)
             {
                 var user = new ApplicationUser
                 {
                     UserName = Input.Email,
                     Email = Input.Email,
-                    FirstName = Input.FirstName,
-                    LastName = Input.LastName,
                     PhoneNumber = Input.PhoneNumber,
                 };
                 var result = await _userManager.CreateAsync(user, Input.Password);
@@ -121,6 +119,8 @@ namespace ResMed.Areas.Identity.Pages.Account
                         var doctor = new Doctors
                         {
                             UserId = user.Id,
+                            FirstName = Input.FirstName,
+                            LastName = Input.LastName,
                             LicenseNr = "",
                             Description = ""
                         };
@@ -136,6 +136,8 @@ namespace ResMed.Areas.Identity.Pages.Account
                         var patient = new Patients
                         {
                             UserId = user.Id,
+                            FirstName = Input.FirstName,
+                            LastName = Input.LastName,
                             Description = ""
                         };
 

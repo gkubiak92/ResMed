@@ -3,17 +3,56 @@
 @{
     var hasExternalLogins = (await SignInManager.GetExternalAuthenticationSchemesAsync()).Any();
 }
+
+<head>
+    <link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.5.0/css/all.css" integrity="sha384-B4dIYHKNBt8Bc12p+WXckhzcICo0wtJAoU8YZTY5qE0Id1GSseTk6S+L3BlXeVIU" crossorigin="anonymous">
+</head>
+
 <ul class="nav nav-pills nav-stacked">
-    <li class="@ManageNavPages.IndexNavClass(ViewContext)"><a asp-page="./Index">Konto</a></li>
+    <li class="@ManageNavPages.IndexNavClass(ViewContext)">
+        <a asp-page="./Index">
+            <span class="fa fa-user"></span> &nbsp;Konto
+        </a>
+    </li>
     @if (hasExternalLogins)
     {
-        <li class="@ManageNavPages.ExternalLoginsNavClass(ViewContext)"><a id="external-login" asp-page="./ExternalLogins">Loginy zewnętrzne</a></li>
+        <li class="@ManageNavPages.ExternalLoginsNavClass(ViewContext)">
+            <a id="external-login" asp-page="./ExternalLogins">Loginy zewnętrzne</a>
+        </li>
     }
+
+
     @if (User.IsInRole(SD.DoctorRole))
     {
-        <li class="@ManageNavPages.DoctorCartNavClass(ViewContext)"><a asp-page="./DoctorCart">Karta doktora</a></li>
+        <li class="@ManageNavPages.DoctorCartNavClass(ViewContext)">
+            <a asp-page="./DoctorCart">
+                <span class="fa fa-clipboard-list"></span> &nbsp;Karta doktora
+            </a>
+        </li>
     }
-    <li class="@ManageNavPages.ChangePasswordNavClass(ViewContext)"><a id="change-password" asp-page="./ChangePassword">Hasło</a></li>
-    <li class="@ManageNavPages.TwoFactorAuthenticationNavClass(ViewContext)"><a asp-page="./TwoFactorAuthentication">Uwierzytelnianie dwuskładnikowe</a></li>
-    <li class="@ManageNavPages.PersonalDataNavClass(ViewContext)"><a asp-page="./PersonalData">Dane osobowe</a></li>
+    @if (User.IsInRole(SD.PatientRole))
+    {
+        <li class="@ManageNavPages.PatientCartNavClass(ViewContext)">
+            <a asp-page="./PatientCart">
+                <span class="fa fa-clipboard-list"></span> &nbsp;Karta pacjenta
+            </a>
+        </li>
+    }
+
+
+    <li class="@ManageNavPages.ChangePasswordNavClass(ViewContext)">
+        <a id="change-password" asp-page="./ChangePassword">
+            <span class="fa fa-key"></span> &nbsp;Hasło
+        </a>
+    </li>
+    <li class="@ManageNavPages.TwoFactorAuthenticationNavClass(ViewContext)">
+        <a asp-page="./TwoFactorAuthentication">
+            <span class="fa fa-fingerprint"></span> &nbsp;Uwierzytelnianie dwuskładnikowe
+        </a>
+    </li>
+    <li class="@ManageNavPages.PersonalDataNavClass(ViewContext)">
+        <a asp-page="./PersonalData">
+            <span class="fa fa-address-card"></span> &nbsp;Dane osobowe
+        </a>
+    </li>
 </ul>

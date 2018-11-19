@@ -24,6 +24,8 @@ namespace ResMed.Areas.Identity.Pages.Account.Manage
 
         public static string DoctorCart => "DoctorCart";
 
+        public static string PatientCart => "PatientCart";
+
         public static string IndexNavClass(ViewContext viewContext) => PageNavClass(viewContext, Index);
 
         public static string ChangePasswordNavClass(ViewContext viewContext) => PageNavClass(viewContext, ChangePassword);
@@ -39,7 +41,9 @@ namespace ResMed.Areas.Identity.Pages.Account.Manage
         public static string TwoFactorAuthenticationNavClass(ViewContext viewContext) => PageNavClass(viewContext, TwoFactorAuthentication);
 
         public static string DoctorCartNavClass(ViewContext viewContext) => PageNavClass(viewContext, DoctorCart);
-    
+
+        public static string PatientCartNavClass(ViewContext viewContext) => PageNavClass(viewContext, PatientCart);
+
         public static string PageNavClass(ViewContext viewContext, string page)
         {
             var activePage = viewContext.ViewData["ActivePage"] as string

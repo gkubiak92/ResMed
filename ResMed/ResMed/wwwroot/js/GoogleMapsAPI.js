@@ -6,13 +6,7 @@ function initMap() {
 
     //tworzy mape
     var map = new google.maps.Map(document.getElementById('map'), {
-        center: { lat: 51.8688, lng: 17.2195 },
-        zoom: 13
-    });
-    
-    var map = new google.maps.Map(document.getElementById('map'), {
-        zoom: 8,
-        center: { lat: -34.397, lng: 150.644 }
+        zoom: 8
     });
     var geocoder = new google.maps.Geocoder();
     

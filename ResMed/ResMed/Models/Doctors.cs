@@ -14,6 +14,13 @@ namespace ResMed.Models
 
         public string UserId { get; set; }
 
+
+        [Display(Name = "Imię")]
+        public string FirstName { get; set; }
+
+        [Display(Name = "Nazwisko")]
+        public string LastName { get; set; }
+
         [Display(Name = "Aktywny")]
         public bool IsActive { get; set; }
 
@@ -34,5 +41,12 @@ namespace ResMed.Models
 
         [Display(Name = "Adres")]
         public string Address { get; set; }
+
+        [Display(Name = "Start pracy")]
+        public DateTime StartWorkHours { get; set; }
+
+        [Display(Name = "Koniec pracy")]
+        public DateTime EndWorkHours { get; set; }
+
     }
 }

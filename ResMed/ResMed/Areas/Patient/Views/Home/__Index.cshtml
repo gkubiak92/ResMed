@@ -1,0 +1,56 @@
+﻿@{
+    ViewBag.Title = "Znajdz lekarza - ResMed";
+}
+<head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>@ViewBag.Title - My ASP.NET Application</title>
+    <link href="~/css/index.css" rel="stylesheet" />
+    <link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.5.0/css/all.css" integrity="sha384-B4dIYHKNBt8Bc12p+WXckhzcICo0wtJAoU8YZTY5qE0Id1GSseTk6S+L3BlXeVIU" crossorigin="anonymous">
+    <link rel="stylesheet" type="text/css" href="~/css/GoogleMapsAPI.css" />
+
+</head>
+
+<body>
+    <div class="navbar bg-transparent">
+    </div>
+
+    <div class="row vcenter">
+        <div class="col-md-8">
+            <div class="h2">Znajdź lekarza i umów wizytę</div>
+            <div class="h4">Szukaj wśród 500 000 lekarzy.</div>
+
+            <form class="form-inline">
+                <input type="text" class="form-control input-lg" id="pac-input" placeholder="miasto">
+                <input type="text" class="form-control input-lg" placeholder="nazwisko lub specjalizacja">
+                <button type="button" class="btn btn-info btn-lg">
+                    <span class="fa fa-search"></span> Szukaj
+                </button>
+
+                <div id="infowindow-content">
+                    <img src="" width="16" height="16" id="place-icon">
+                    <span id="place-name" class="title"></span><br>
+                    <span id="place-address"></span>
+                </div>
+            </form>
+        </div>
+
+        <div class="col-md-4 img-responsive pull-right">
+            <img src="~/images/LandingPage/kc.png" alt="Doctor">
+        </div>
+    </div>
+    <div class="col-md-6">
+        <img src="~/images/DoctorCart/doctor-blank-profile.png" />
+        <br /><br />
+        <div id="map"></div> @*mapa pod zdj profilowym*@
+    </div>
+
+
+    <script src="~/js/GoogleMapsAPI.js"></script>
+    <script src="https://maps.googleapis.com/maps/api/js?key=AIzaSyDsCfRtCAXWGgSvMo7uEv8XqfQCDnGSWas&libraries=places&callback=initMap"
+            async defer></script>
+</body>
+
+@section Scripts {
+    <partial name="_ValidationScriptsPartial" />
+}

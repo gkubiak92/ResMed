@@ -195,14 +195,22 @@ namespace ResMed.Data.Migrations
 
                     b.Property<string>("Description");
 
+                    b.Property<DateTime>("EndWorkHours");
+
+                    b.Property<string>("FirstName");
+
                     b.Property<string>("Image");
 
                     b.Property<bool>("IsActive");
+
+                    b.Property<string>("LastName");
 
                     b.Property<string>("LicenseNr")
                         .IsRequired();
 
                     b.Property<int?>("SpecializationId");
+
+                    b.Property<DateTime>("StartWorkHours");
 
                     b.Property<string>("UserId");
 
@@ -220,6 +228,10 @@ namespace ResMed.Data.Migrations
                         .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
 
                     b.Property<string>("Description");
+
+                    b.Property<string>("FirstName");
+
+                    b.Property<string>("LastName");
 
                     b.Property<string>("UserId");
 
@@ -242,6 +254,23 @@ namespace ResMed.Data.Migrations
                     b.ToTable("Specializations");
                 });
 
+            modelBuilder.Entity("ResMed.Models.Visits", b =>
+                {
+                    b.Property<int>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
+
+                    b.Property<DateTime>("Date");
+
+                    b.Property<int>("DoctorId");
+
+                    b.Property<int>("PatientId");
+
+                    b.HasKey("Id");
+
+                    b.ToTable("Visits");
+                });
+
             modelBuilder.Entity("ResMed.Models.VisitTypes", b =>
                 {
                     b.Property<int>("Id")
@@ -260,9 +289,6 @@ namespace ResMed.Data.Migrations
                 {
                     b.HasBaseType("Microsoft.AspNetCore.Identity.IdentityUser");
 
-                    b.Property<string>("FirstName");
-
-                    b.Property<string>("LastName");
 
                     b.ToTable("ApplicationUser");
 

@@ -8,6 +8,8 @@
   <ItemGroup>
     <Compile Remove="Data\Migrations\20181029181318_AddSpecializationToDocModel.cs" />
     <Compile Remove="Data\Migrations\20181029181318_AddSpecializationToDocModel.Designer.cs" />
+    <Compile Remove="Data\Migrations\20181119174731_AddSearchModel.cs" />
+    <Compile Remove="Data\Migrations\20181119174731_AddSearchModel.Designer.cs" />
   </ItemGroup>
 
   <ItemGroup>
@@ -16,8 +18,13 @@
   </ItemGroup>
 
   <ItemGroup>
+    <Folder Include="Areas\Doctor\Controllers\" />
     <Folder Include="Areas\Identity\Services\" />
     <Folder Include="Controllers\" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <None Include="wwwroot\css\index.css" />
   </ItemGroup>
 
 </Project>

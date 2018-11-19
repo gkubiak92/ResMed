@@ -15,8 +15,17 @@
 <div class="row">
     <div class="col-md-6">
         <form id="profile-form" method="post">
-            <div asp-validation-summary="All" class="text-danger"></div>
-
+            <div asp-validation-summary="ModelOnly" class="text-danger"></div>
+            <div class="form-group">
+                <label asp-for="Input.FirstName"></label>
+                <input asp-for="Input.FirstName" class="form-control" />
+                <span asp-validation-for="Input.FirstName" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="Input.LastName"></label>
+                <input asp-for="Input.LastName" class="form-control" />
+                <span asp-validation-for="Input.LastName" class="text-danger"></span>
+            </div>
             <div class="form-group">
                 <label asp-for="Input.PhoneNumber"></label>
                 <input asp-for="Input.PhoneNumber" class="form-control" />
@@ -38,6 +47,19 @@
                 <input asp-for="Input.LicenseNr" class="form-control" />
                 <span asp-validation-for="Input.LicenseNr" class="text-danger"></span>
             </div>
+
+            <div class="form-group">
+                <label asp-for="Input.StartWorkHours"></label>
+                <input asp-for="Input.StartWorkHours" class="form-control" />
+                <span asp-validation-for="Input.StartWorkHours" class="text-danger"></span>
+            </div>
+
+            <div class="form-group">
+                <label asp-for="Input.EndWorkHours"></label>
+                <input asp-for="Input.EndWorkHours" class="form-control" />
+                <span asp-validation-for="Input.EndWorkHours" class="text-danger"></span>
+            </div>
+
             <div class="form-group">
                 <label asp-for="Input.Description"></label>
                 <textarea style="height:180px; resize:none" asp-for="Input.Description" class="form-control"></textarea>
@@ -71,7 +93,4 @@
 
 @section Scripts {
     <partial name="_ValidationScriptsPartial" />
-
-
-
 }

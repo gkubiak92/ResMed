@@ -1,0 +1,37 @@
+﻿#landingbody{
+    background: #20c997; /*#5BBCA4;*/
+    width: 80%;
+    padding: 0 20px 0 20px;
+    margin: 0px auto;
+}
+
+.h1, h1, .h2, h2 {
+    color: #fff;
+}
+
+.h3, h3, .h4, h4 {
+    color: #ccc;
+    margin-bottom: 25px;
+}
+
+navbar-pad {
+    width: 80%;
+    /*padding: 0 100px 0 100px;*/
+}
+
+#doctor-img {
+    z-index: -5;
+    position: relative;
+    width: 350px;
+    height: 600px;
+    float: right;
+}
+
+input-fields {
+    max-width: 580px !important;
+}
+
+.navbar-dark .navbar-nav .nav-link {
+    color: rgba(255, 255, 255, 1);
+    font-weight: bold;
+}

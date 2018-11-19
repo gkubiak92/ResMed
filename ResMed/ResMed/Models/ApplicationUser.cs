@@ -9,10 +9,5 @@ namespace ResMed.Models
 {
     public class ApplicationUser : IdentityUser
     {
-        [Display(Name = "Imię")]
-        public string FirstName { get; set; }
-
-        [Display(Name = "Nazwisko")]
-        public string LastName { get; set; }
     }
 }

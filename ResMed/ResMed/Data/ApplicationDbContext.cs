@@ -19,5 +19,6 @@ namespace ResMed.Data
         public DbSet<VisitTypes> VisitTypes { get; set; }
         public DbSet<ApplicationUser> ApplicationUser { get; set; }
         public DbSet<Specializations> Specializations { get; set; }
+        public DbSet<Visits> Visits { get; set; }
     }
 }

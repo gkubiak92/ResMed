@@ -1,0 +1,35 @@
+﻿body {
+    background: #20c997;
+    width: 80%;
+    max-width: 992px;
+    padding-top: 15px;
+    margin: auto;
+}
+
+.h2 {
+    color: #fff;
+}
+
+.h4 {
+    color: #ccc;
+    margin-bottom: 25px;
+}
+
+.navbar-nav > li > a {
+    color: #fff;
+    font-weight: 600;
+    font-size: 1.5rem;
+}
+
+.nav > li > a:hover,
+.nav > li > a:focus {
+    color: #ccc;
+    background: transparent;
+    text-decoration: none;
+}
+
+.vcenter {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
