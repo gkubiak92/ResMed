@@ -7,6 +7,7 @@ namespace ResMed.Utility
 {
     public class SD
     {
+        public const string AdminRole = "AdminRole";
         public const string DoctorRole = "DoctorRole";
         public const string PatientRole = "PatientRole";
     }

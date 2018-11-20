@@ -10,6 +10,7 @@
         <link rel="stylesheet" href="~/css/site.css" />
         <link rel="stylesheet" href="~/css/jquery-ui.css" />
         <link rel="stylesheet" href="~/css/jquery.timepicker.css" />
+        <link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.5.0/css/all.css" integrity="sha384-B4dIYHKNBt8Bc12p+WXckhzcICo0wtJAoU8YZTY5qE0Id1GSseTk6S+L3BlXeVIU" crossorigin="anonymous">
     </environment>
     <environment exclude="Development">
         <link rel="stylesheet" href="https://ajax.aspnetcdn.com/ajax/bootstrap/3.3.7/css/bootstrap.min.css"
@@ -18,6 +19,7 @@
         <link rel="stylesheet" href="~/css/site.min.css" asp-append-version="true" />
         <link rel="stylesheet" href="~/css/jquery-ui.css" />
         <link rel="stylesheet" href="~/css/jquery.timepicker.css" />
+        <link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.5.0/css/all.css" integrity="sha384-B4dIYHKNBt8Bc12p+WXckhzcICo0wtJAoU8YZTY5qE0Id1GSseTk6S+L3BlXeVIU" crossorigin="anonymous">
     </environment>
 </head>
 <body>
@@ -31,12 +33,26 @@
                     <span class="icon-bar"></span>
                 </button>
                 <a asp-area="" asp-controller="Home" asp-action="Index" class="navbar-brand">
-                <span class="glyphicon-plus glyphicon"></span>&nbsp;
-                ResMed</a>
+                    <span class="glyphicon-plus glyphicon"></span>&nbsp;
+                    ResMed
+                </a>
             </div>
             <div class="navbar-collapse collapse">
                 <ul class="nav navbar-nav">
                     <li><a asp-area="" asp-controller="Home" asp-action="Index">Home</a></li>
+                    @if (User.IsInRole("AdminRole"))
+                    {
+                        <li><a asp-area="Admin" asp-controller="Doctors" asp-action="Index">Lista doktorów</a></li>
+                        <li><a asp-area="Admin" asp-controller="Specializations" asp-action="Index">Lista specjalizacji</a></li>
+                    }
+                    @if (User.IsInRole("PatientRole"))
+                    {
+                        <li><a asp-area="Patient" asp-controller="MyVisits" asp-action="Index">Moje wizyty</a></li>
+                    }
+                    @if (User.IsInRole("DoctorRole"))
+                    {
+                        <li><a asp-area="Doctor" asp-controller="MyPatients" asp-action="Index">Moje wizyty</a></li>
+                    }
                 </ul>
                 <partial name="_LoginPartial" />
             </div>

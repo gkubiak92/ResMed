@@ -1,4 +1,4 @@
-﻿@model ResMed.Models.ViewModel.VisitsViewModel
+﻿@model ResMed.Models.Doctors
 
 
 @{
@@ -9,8 +9,8 @@
 
 <form method="post">
     <h2>
-        @Html.DisplayFor(model => model.Doctor.FirstName)
-        @Html.DisplayFor(model => model.Doctor.LastName)
+        @Html.DisplayFor(model => model.FirstName)
+        @Html.DisplayFor(model => model.LastName)
     </h2>
 
 
@@ -18,33 +18,26 @@
         <hr />
         <dl class="dl-horizontal">
             <dt>
-                @Html.DisplayFor(model => model.Doctor.FirstName)
-                @Html.DisplayFor(model => model.Doctor.LastName)
+                @Html.DisplayFor(model => model.FirstName)
+                @Html.DisplayFor(model => model.LastName)
             </dt>
             <dt>
-                @Html.DisplayFor(model => model.Doctor.Specializations.Name)
+                @Html.DisplayFor(model => model.Specializations.Name)
             </dt>
         </dl>
 
     </div>
 
     <div>
-        @*<input type="hidden" id="selectedDate" /> ukryte pole które przechwyca klikniętą datę w kalendarzu*@
-        <input asp-for="@Model.Visit.Date"  type="text" id="datepicker" class="form-control" />
+        <input type="hidden" id="selectedDate" /> @*ukryte pole które przechwyca klikniętą datę w kalendarzu*@
+        <div id="datepicker"></div>
 
-        @*<div id="datepicker"></div>*@
-
-        <input asp-for="@Model.Visit.Time" value="" type="text" class="timepicker form-group" />
-    </div>
-
-    <div class="form-group danger">
-        <p>
-            <span style="color:red;">@TempData["Error"]</span>        </p>
+        <input type="text" class="timepicker form-group" />
     </div>
 
     <div>
         <div class="form-group">
-            <input type="submit" value="Zarezerwuj" class="btn btn-default" asp-route-id="@Model.Doctor.Id"/>
+            <input type="submit" value="Zarezerwuj" class="btn btn-default" asp-route-id="@Model.Id"/>
             <a asp-action="Index" class="btn btn-danger">Powrót</a>
 
         </div>
@@ -58,7 +51,7 @@
         $(function () {
             $("#datepicker").datepicker({
                 minDate: +1, maxDate: "+3M",
-                dateFormat: 'dd-mm-yy'
+                altField: '#selectedDate'
             });
         });
 

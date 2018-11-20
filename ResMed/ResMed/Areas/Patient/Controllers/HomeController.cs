@@ -3,12 +3,14 @@ using System.Collections.Generic;
 using System.Diagnostics;
 using System.Linq;
 using System.Threading.Tasks;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.RazorPages;
 using Microsoft.EntityFrameworkCore;
 using ResMed.Data;
 using ResMed.Models;
+using ResMed.Models.ViewModel;
 
 namespace ResMed.Controllers
 {
@@ -19,11 +21,15 @@ namespace ResMed.Controllers
         private readonly ApplicationDbContext _db;
         private readonly UserManager<IdentityUser> _userManager;
 
+        [BindProperty]
+        public VisitsViewModel VisitVM { get; set; }
+
 
         public HomeController(ApplicationDbContext db, UserManager<IdentityUser> userManager)
         {
             _db = db;
             _userManager = userManager;
+            VisitVM = new VisitsViewModel();
         }
 
         [HttpGet]
@@ -44,43 +50,59 @@ namespace ResMed.Controllers
         public async Task<IActionResult> Search(string id)
         {
             var doctorList = await _db.Doctors.Include(m => m.Specializations).Where(m => m.Address == id).ToListAsync();
-            
+
             return View(doctorList);
         }
 
         [HttpGet]
+        [Authorize(Roles = "PatientRole")]
         public async Task<IActionResult> BookDoc(int? id)
         {
             if (id == null)
                 return NotFound();
 
             var doctor = await _db.Doctors.Include(m => m.Specializations).Where(m => m.Id == id).FirstOrDefaultAsync();
-
-
-            return View(doctor);
+            
+            VisitVM.Doctor = doctor;
+            
+            return View(VisitVM);
         }
 
         [HttpPost]
+        [ValidateAntiForgeryToken]
+        [Authorize(Roles = "PatientRole")]
         public async Task<IActionResult> BookDoc(int id)
         {
-            var doctor = await _db.Doctors.Include(m => m.Specializations).Where(m => m.Id == id).FirstOrDefaultAsync();
+            //var doctor = await _db.Doctors.Include(m => m.Specializations).Where(m => m.Id == id).FirstOrDefaultAsync();
 
             var user = await _userManager.GetUserAsync(User);
-            var userId = await _userManager.GetUserIdAsync(user);
 
             var patient = GetActualLoggedPatientFromDb(user);
 
-            var visit = new Visits
-            {
-                Date = DateTime.Today,
-                DoctorId = doctor.Id,
-                PatientId = patient.Id
-            };
+            VisitVM.Visit.Date = VisitVM.Visit.Date
+                                                .AddHours(VisitVM.Visit.Time.Hour)
+                                                .AddMinutes(VisitVM.Visit.Time.Minute);
+            VisitVM.Visit.DoctorId = id;
+            VisitVM.Visit.PatientId = patient.Id;
 
-            _db.Visits.Add(visit);
+            Visits vis = VisitVM.Visit;
+
+            var visDateCheck = (from v in _db.Visits
+                                where (v.DoctorId == vis.DoctorId
+                                && v.Date == vis.Date)
+                                select v);
+
+            if(visDateCheck.Count() > 0)
+            {
+                TempData["Error"] = "Ten termin jest już zajęty";
+                return RedirectToAction(nameof(BookDoc));
+            }
+
+            TempData["Error"] = "";
+            _db.Visits.Add(vis);
             await _db.SaveChangesAsync();
 
-            return RedirectToAction(nameof(Index));
+            return RedirectToAction(nameof(Index), "MyVisits");
         }
 
         private Patients GetActualLoggedPatientFromDb(IdentityUser user)

@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using ResMed.Data;
 using ResMed.Models;
@@ -9,6 +10,7 @@ using ResMed.Models;
 namespace ResMed.Areas.Doctor.Controllers
 {
     [Area("Admin")]
+    [Authorize(Roles="AdminRole")]
     public class DoctorsController : Controller
     {
         private readonly ApplicationDbContext _db;
