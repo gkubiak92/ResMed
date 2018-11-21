@@ -58,6 +58,7 @@ namespace ResMed.Controllers
         [Authorize(Roles = "PatientRole")]
         public async Task<IActionResult> BookDoc(int? id)
         {
+
             if (id == null)
                 return NotFound();
 
@@ -73,8 +74,6 @@ namespace ResMed.Controllers
         [Authorize(Roles = "PatientRole")]
         public async Task<IActionResult> BookDoc(int id)
         {
-            //var doctor = await _db.Doctors.Include(m => m.Specializations).Where(m => m.Id == id).FirstOrDefaultAsync();
-
             var user = await _userManager.GetUserAsync(User);
 
             var patient = GetActualLoggedPatientFromDb(user);
@@ -94,7 +93,7 @@ namespace ResMed.Controllers
 
             if(visDateCheck.Count() > 0)
             {
-                TempData["Error"] = "Ten termin jest już zajęty";
+                TempData["Error"] = "Error";
                 return RedirectToAction(nameof(BookDoc));
             }
 

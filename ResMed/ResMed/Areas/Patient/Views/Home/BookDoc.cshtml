@@ -2,51 +2,89 @@
 
 
 @{
-    ViewData["Title"] = "Szczegóły doktora";
+    ViewData["Title"] = "Zarezerwuj doktora";
     Layout = "~/Views/Shared/_Layout.cshtml";
 }
 
+<head>
+    <link rel="stylesheet" type="text/css" href="~/css/GoogleMapsAPI.css" />
+</head>
+
+
+<br />
+<h4>@ViewData["Title"]</h4>
 
 <form method="post">
-    <h2>
-        @Html.DisplayFor(model => model.Doctor.FirstName)
-        @Html.DisplayFor(model => model.Doctor.LastName)
-    </h2>
-
-
-    <div>
-        <hr />
-        <dl class="dl-horizontal">
-            <dt>
-                @Html.DisplayFor(model => model.Doctor.FirstName)
-                @Html.DisplayFor(model => model.Doctor.LastName)
-            </dt>
-            <dt>
-                @Html.DisplayFor(model => model.Doctor.Specializations.Name)
-            </dt>
-        </dl>
-
-    </div>
-
-    <div>
-        @*<input type="hidden" id="selectedDate" /> ukryte pole które przechwyca klikniętą datę w kalendarzu*@
-        <input asp-for="@Model.Visit.Date"  type="text" id="datepicker" class="form-control" />
-
-        @*<div id="datepicker"></div>*@
-
-        <input asp-for="@Model.Visit.Time" value="" type="text" class="timepicker form-group" />
-    </div>
-
-    <div class="form-group danger">
-        <p>
-            <span style="color:red;">@TempData["Error"]</span>        </p>
-    </div>
-
-    <div>
+    <div class="row">
         <div class="form-group">
-            <input type="submit" value="Zarezerwuj" class="btn btn-default" asp-route-id="@Model.Doctor.Id"/>
-            <a asp-action="Index" class="btn btn-danger">Powrót</a>
 
+            @if (TempData["Error"] != null)
+            {
+                if (TempData["Error"].ToString() == "Error")
+                {
+                    <div class="alert alert-danger alert-dismissible" role="alert">
+                        <button type="button" class="close" data-dismiss="alert" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+                        Ten termin jest już zajęty, spróbuj wybrać inny
+                    </div>
+                }
+            }
+        </div>
+    </div>
+
+    <div class="row">
+        <div class="col-md-4">
+
+            <img src="~/images/DoctorCart/doctor-blank-profile.png" />
+
+
+            <div class="form-group">
+                <h2>
+                    @Html.DisplayFor(model => model.Doctor.FirstName)
+                    @Html.DisplayFor(model => model.Doctor.LastName)
+                </h2>
+                <h4>@Html.DisplayFor(model => model.Doctor.Specializations.Name)</h4>
+            </div>
+            <div class="form-group">
+
+                @*<input type="hidden" id="selectedDate" /> ukryte pole które przechwyca klikniętą datę w kalendarzu*@
+                <label asp-for="@Model.Visit.Date"></label>
+                <input asp-for="@Model.Visit.Date" type="text" id="datepicker" placeholder="wybierz datę" class="form-control" />
+
+                @*<div id="datepicker"></div>*@
+                <label asp-for="@Model.Visit.Time"></label>
+                <input asp-for="@Model.Visit.Time" value="" type="time" class="timepicker form-control" />
+            </div>
+            <div class="form-group">
+                <input type="submit" value="Zarezerwuj" class="btn btn-default" asp-route-id="@Model.Doctor.Id" />
+                <a asp-action="Index" class="btn btn-danger">Powrót</a>
+            </div>
+        </div>
+
+
+
+        <div class="col-md-4">
+            <div class="form-group">
+                <h2>Jak dojechać</h2>
+
+                <input type="hidden" asp-for="@Model.Doctor.Address" id="pac-input"/>
+
+                @*Google Places Api*@
+
+                <div id="infowindow-content">
+                    <img src="" width="16" height="16" id="place-icon">
+                    <span id="place-name" class="title"></span><br>
+                    <span id="place-address"></span>
+                </div>
+                @*_________________*@
+
+                <br /><br />
+                <div id="map"></div> @*mapa pod zdj profilowym*@
+
+                <script src="~/js/GoogleMapsAPI.js"></script>
+                <script src="https://maps.googleapis.com/maps/api/js?key=AIzaSyDsCfRtCAXWGgSvMo7uEv8XqfQCDnGSWas&libraries=places&callback=initMap"
+                        async defer></script>
+
+            </div>
         </div>
     </div>
 </form>
@@ -66,11 +104,9 @@
 
         $('.timepicker').timepicker({
             timeFormat: 'HH:mm',
-            interval: 15,
-            minTime: '08:00',
-            maxTime: '18:00',
-            defaultTime: '11',
-            startTime: '08:00',
+            interval: @Model.Doctor.AverageVisitTime,
+            minTime: '@Model.Doctor.StartWorkHours.TimeOfDay',
+            maxTime: '@Model.Doctor.EndWorkHours.TimeOfDay',
             dynamic: false,
             dropdown: true,
             scrollbar: true

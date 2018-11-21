@@ -72,6 +72,9 @@ namespace ResMed.Areas.Identity.Pages.Account.Manage
             [Display(Name = "Adres")]
             public string Address { get; set; }
 
+            [Display(Name = "Średni czas wizyty [min]")]
+            [Range(0, 360, ErrorMessage = "Wprowadź właściwą liczbę")]
+            public int AverageVisitTime { get; set; }
 
             [Display(Name = "Start pracy")]
             public DateTime StartWorkHours { get; set; }
@@ -116,7 +119,10 @@ namespace ResMed.Areas.Identity.Pages.Account.Manage
                 LicenseNr = doctor.LicenseNr,
                 Description = doctor.Description,
                 SpecializationId = doctor.SpecializationId,
-                Address = doctor.Address
+                Address = doctor.Address,
+                AverageVisitTime = doctor.AverageVisitTime,
+                StartWorkHours = doctor.StartWorkHours,
+                EndWorkHours = doctor.EndWorkHours
             };
 
             return Page();
@@ -185,6 +191,24 @@ namespace ResMed.Areas.Identity.Pages.Account.Manage
             if (Input.Address != doctor.Address)
             {
                 doctor.Address = Input.Address;
+                _db.Doctors.Update(doctor);
+                await _db.SaveChangesAsync();
+            }
+            if (Input.AverageVisitTime != doctor.AverageVisitTime)
+            {
+                doctor.AverageVisitTime= Input.AverageVisitTime;
+                _db.Doctors.Update(doctor);
+                await _db.SaveChangesAsync();
+            }
+            if (Input.StartWorkHours != doctor.StartWorkHours)
+            {
+                doctor.StartWorkHours = Input.StartWorkHours;
+                _db.Doctors.Update(doctor);
+                await _db.SaveChangesAsync();
+            }
+            if (Input.EndWorkHours != doctor.EndWorkHours)
+            {
+                doctor.EndWorkHours = Input.EndWorkHours;
                 _db.Doctors.Update(doctor);
                 await _db.SaveChangesAsync();
             }

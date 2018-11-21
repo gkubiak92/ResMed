@@ -42,6 +42,10 @@ namespace ResMed.Models
         [Display(Name = "Adres")]
         public string Address { get; set; }
 
+        [Display(Name = "Średni czas wizyty [min]")]
+        [Range(0, 360, ErrorMessage = "Wprowadź właściwą liczbę")]
+        public int AverageVisitTime { get; set; }
+
         [Display(Name = "Start pracy")]
         public DateTime StartWorkHours { get; set; }
 
