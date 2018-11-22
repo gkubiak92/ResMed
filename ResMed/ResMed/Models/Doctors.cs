@@ -52,5 +52,29 @@ namespace ResMed.Models
         [Display(Name = "Koniec pracy")]
         public DateTime EndWorkHours { get; set; }
 
+        [Display(Name ="Poniedziałek")]
+        public bool WorkingMonday { get; set; }
+
+        [Display(Name = "Wtorek")]
+        public bool WorkingTuesday { get; set; }
+
+        [Display(Name = "Środa")]
+        public bool WorkingWednesday{ get; set; }
+
+        [Display(Name = "Czwartek")]
+        public bool WorkingThursday { get; set; }
+
+        [Display(Name = "Piątek")]
+        public bool WorkingFriday { get; set; }
+
+        [Display(Name = "Sobota")]
+        public bool WorkingSaturday { get; set; }
+
+        [Display(Name = "Niedziela")]
+        public bool WorkingSunday { get; set; }
+
+        [NotMapped]
+        public int[] WorkDaysArr { get; set; }
+
     }
 }

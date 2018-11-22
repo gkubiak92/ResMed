@@ -55,18 +55,27 @@
                 <input asp-for="@Model.Visit.Time" value="" type="time" class="timepicker form-control" />
             </div>
             <div class="form-group">
+
+
+
+            </div>
+            <div class="form-group">
                 <input type="submit" value="Zarezerwuj" class="btn btn-default" asp-route-id="@Model.Doctor.Id" />
                 <a asp-action="Index" class="btn btn-danger">Powrót</a>
             </div>
         </div>
 
+        <script type="text/javascript">
 
+
+
+        </script>
 
         <div class="col-md-4">
             <div class="form-group">
                 <h2>Jak dojechać</h2>
 
-                <input type="hidden" asp-for="@Model.Doctor.Address" id="pac-input"/>
+                <input type="hidden" asp-for="@Model.Doctor.Address" id="pac-input" />
 
                 @*Google Places Api*@
 
@@ -91,16 +100,34 @@
 
 @section Scripts{
 
+
+
     @*Datepicker script*@
     <script>
+
         $(function () {
             $("#datepicker").datepicker({
                 minDate: +1, maxDate: "+3M",
-                dateFormat: 'dd-mm-yy'
+                dateFormat: 'dd-mm-yy',
+                firstDay: 1,
+                beforeShowDay: function (date) {
+
+                    var myArray = [];
+
+    @foreach (var d in Model.Doctor.WorkDaysArr)
+    {
+        @:myArray.push(@d);
+    }
+
+            console.log(myArray);
+
+
+                    var day = date.getDay();
+                    return [($.inArray(day, myArray) >= 0)];
+                    console.log(myArray);
+                }
             });
         });
-
-    @*Timepicker script*@
 
         $('.timepicker').timepicker({
             timeFormat: 'HH:mm',

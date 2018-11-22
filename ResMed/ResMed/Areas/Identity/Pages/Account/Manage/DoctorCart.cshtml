@@ -67,6 +67,46 @@
             </div>
 
             <div class="form-group">
+                <div class="form-group text-center">
+                    <label>Dni pracujące</label>
+                </div>
+                <table class="table table-striped">
+                    <tr align="center">
+                        <th>Pn.</th>
+                        <th>Wt.</th>
+                        <th>Śr.</th>
+                        <th>Czw.</th>
+                        <th>Pt.</th>
+                        <th>Sb.</th>
+                        <th>Nd.</th>
+                    </tr>
+                    <tr align="center">
+                        <td>
+                            <input asp-for="Input.WorkingMonday" type="checkbox" />
+                        </td>
+                        <td>
+                            <input asp-for="Input.WorkingTuesday" type="checkbox" />
+                        </td>
+                        <td>
+                            <input asp-for="Input.WorkingWednesday" type="checkbox" />
+                        </td>
+                        <td>
+                            <input asp-for="Input.WorkingThursday" type="checkbox" />
+                        </td>
+                        <td>
+                            <input asp-for="Input.WorkingFriday" type="checkbox" />
+                        </td>
+                        <td>
+                            <input asp-for="Input.WorkingSaturday" type="checkbox" />
+                        </td>
+                        <td>
+                            <input asp-for="Input.WorkingSunday" type="checkbox" />
+                        </td>
+                    </tr>
+                </table>
+            </div>
+
+            <div class="form-group">
                 <label asp-for="Input.Description"></label>
                 <textarea style="height:180px; resize:none" asp-for="Input.Description" class="form-control"></textarea>
                 <span asp-validation-for="Input.Description" class="text-danger"></span>

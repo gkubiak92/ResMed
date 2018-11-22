@@ -3,15 +3,17 @@ using System;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 using ResMed.Data;
 
 namespace ResMed.Data.Migrations
 {
     [DbContext(typeof(ApplicationDbContext))]
-    partial class ApplicationDbContextModelSnapshot : ModelSnapshot
+    [Migration("20181121205049_AddWorkingDaysOfWeek")]
+    partial class AddWorkingDaysOfWeek
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -221,8 +223,6 @@ namespace ResMed.Data.Migrations
                     b.Property<bool>("WorkingMonday");
 
                     b.Property<bool>("WorkingSaturday");
-
-                    b.Property<bool>("WorkingSunday");
 
                     b.Property<bool>("WorkingThursday");
 

@@ -1,4 +1,4 @@
-﻿
+﻿@model ResMed.Models.ViewModel.HomeViewModel
 @{
     ViewBag.Title = "Znajdz lekarza - ResMed";
     Layout = null;
@@ -42,11 +42,20 @@
             <div class="h4">Szukaj wśród 500 000 lekarzy.</div>
 
             <form class="form-inline" method="post">
-                <input type="text" class="form-control input-lg" id="autocomplete" name="searchString" placeholder="miasto">
-                <input type="text" class="form-control input-lg" placeholder="nazwisko lub specjalizacja">
-                <button type="submit" class="btn btn-info btn-lg">
-                    <span class="fa fa-search"></span> Szukaj
-                </button>
+                <div class="row">
+                    <input type="text" class="form-control input-lg" id="autocomplete" name="searchString" placeholder="miasto">
+                    @*<input type="text" class="form-control input-lg" name="spec" placeholder="nazwisko lub specjalizacja">*@
+                    @*<select asp-for="@Model.selectedSpec" name="spec" asp-items="@Model.SpecList" class="form-control input-lg"></select>*@
+                    @Html.DropDownList("spec", Model.SpecList, "Wybierz specjalizację", new { @class = "form-control input-lg" }) @*Dropdownlist pownieważ bez sensu dodawać pusty item do
+                        selectlist, a w dropdownlistfor nie można korzystać z
+                        htmlowego "name" który przekazuję do kontrolera*@
+                </div>
+                <br />
+                <div class="row">
+                    <button type="submit" class="btn btn-info btn-lg">
+                        <span class="fa fa-search"></span> Szukaj
+                    </button>
+                </div>
             </form>
         </div>
 

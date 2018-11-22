@@ -59,7 +59,7 @@ namespace ResMed.Areas.Identity.Pages.Account.Manage
 
 
             //Pola dodatkowe Input dla Doktora
-            [Required(ErrorMessage ="Pole wymagane")]
+            [Required(ErrorMessage = "Pole wymagane")]
             [Display(Name = "Nr licencji")]
             public string LicenseNr { get; set; }
 
@@ -81,6 +81,31 @@ namespace ResMed.Areas.Identity.Pages.Account.Manage
 
             [Display(Name = "Koniec pracy")]
             public DateTime EndWorkHours { get; set; }
+
+
+
+
+
+            [Display(Name = "Poniedziałek")]
+            public bool WorkingMonday { get; set; }
+
+            [Display(Name = "Wtorek")]
+            public bool WorkingTuesday { get; set; }
+
+            [Display(Name = "Środa")]
+            public bool WorkingWednesday { get; set; }
+
+            [Display(Name = "Czwartek")]
+            public bool WorkingThursday { get; set; }
+
+            [Display(Name = "Piątek")]
+            public bool WorkingFriday { get; set; }
+
+            [Display(Name = "Sobota")]
+            public bool WorkingSaturday { get; set; }
+
+            [Display(Name = "Niedziela")]
+            public bool WorkingSunday { get; set; }
 
         }
 
@@ -122,7 +147,15 @@ namespace ResMed.Areas.Identity.Pages.Account.Manage
                 Address = doctor.Address,
                 AverageVisitTime = doctor.AverageVisitTime,
                 StartWorkHours = doctor.StartWorkHours,
-                EndWorkHours = doctor.EndWorkHours
+                EndWorkHours = doctor.EndWorkHours,
+
+                WorkingMonday = doctor.WorkingMonday,
+                WorkingTuesday = doctor.WorkingTuesday,
+                WorkingWednesday = doctor.WorkingWednesday,
+                WorkingThursday = doctor.WorkingThursday,
+                WorkingFriday = doctor.WorkingFriday,
+                WorkingSaturday = doctor.WorkingSaturday,
+                WorkingSunday = doctor.WorkingSunday
             };
 
             return Page();
@@ -196,7 +229,7 @@ namespace ResMed.Areas.Identity.Pages.Account.Manage
             }
             if (Input.AverageVisitTime != doctor.AverageVisitTime)
             {
-                doctor.AverageVisitTime= Input.AverageVisitTime;
+                doctor.AverageVisitTime = Input.AverageVisitTime;
                 _db.Doctors.Update(doctor);
                 await _db.SaveChangesAsync();
             }
@@ -214,12 +247,47 @@ namespace ResMed.Areas.Identity.Pages.Account.Manage
             }
 
 
+            //bool[] workingDayArr = { Input.WorkingMonday,
+            //                            Input.WorkingTuesday,
+            //                            Input.WorkingWednesday,
+            //                            Input.WorkingThursday,
+            //                            Input.WorkingFriday,
+            //                            Input.WorkingSaturday,
+            //                            Input.WorkingSunday};
+
+            //int[] finalArr = new int[7];
+
+
+            //for (int i = 0; i < workingDayArr.Length; i++)
+            //{
+            //    if (workingDayArr[i] == true)
+            //        finalArr[i] = i;
+            //    else
+            //        finalArr[i] = 50; //50 tak o, bo tydzien ma tylko 7 dni - chwilowe rozwiązanie
+            //}
+
+            //doctor.WorkDaysArr = new int[7];
+
+            //finalArr.CopyTo(doctor.WorkDaysArr, 0);
+
+            doctor.WorkingMonday = Input.WorkingMonday;
+            doctor.WorkingTuesday = Input.WorkingTuesday;
+            doctor.WorkingWednesday = Input.WorkingWednesday;
+            doctor.WorkingThursday = Input.WorkingThursday;
+            doctor.WorkingFriday = Input.WorkingFriday;
+            doctor.WorkingSaturday = Input.WorkingSaturday;
+            doctor.WorkingSunday = Input.WorkingSunday;
+
+            _db.Doctors.Update(doctor);
+            await _db.SaveChangesAsync();
+
+
             await _signInManager.RefreshSignInAsync(user);
-            StatusMessage = "Twój profil został zaktualizowany";
+            StatusMessage = "Twój profil został zaktualizowany";/* + doctor.WorkDaysArr[0] + ' ' + doctor.WorkDaysArr[1] + ' ' + doctor.WorkDaysArr[2]*/
             return RedirectToPage();
 
         }
-        
+
 
         /////////Metody///////////////
 
