@@ -68,7 +68,7 @@ namespace ResMed.Controllers
                 return View(doctorPlaceSpecList);
             }
 
-            if(string.IsNullOrEmpty(id) && !string.IsNullOrEmpty(spec))
+            if (string.IsNullOrEmpty(id) && !string.IsNullOrEmpty(spec))
             {
                 var doctorSpecOnlyList = await _db.Doctors.Include(m => m.Specializations)
                                                     .Where(s => s.Specializations.Name == spec)
@@ -90,9 +90,45 @@ namespace ResMed.Controllers
             return View(doctorList);
         }
 
+
+        [HttpGet]
+        public async Task<ActionResult> Calendar(int id, string Date)
+        {
+            var model = await _db.Doctors.Include(m => m.Specializations).Where(m => m.Id == id).FirstOrDefaultAsync();
+
+            model.SelectedDate = DateTime.Parse(Date);
+
+            var takenHoursList = (from v in _db.Visits
+                                  where (v.DoctorId == model.Id
+                                  && v.Date.Day == model.SelectedDate.Day
+                                  && v.Date.Month == model.SelectedDate.Month
+                                  && v.Date.Year == model.SelectedDate.Year)
+                                  select v.Date.TimeOfDay.ToString(@"hh\:mm")).ToList();
+
+            model.TakenHoursInDay = takenHoursList;
+
+            //Pętla generująca listę stringów odnośnie dostępnych godzin dla danego doktora
+            int IntervalParameter = model.AverageVisitTime;
+            TimeSpan SpanHours = model.EndWorkHours.TimeOfDay - model.StartWorkHours.TimeOfDay;
+
+            // .Range(0, 1440 / IntervalParameter) - see Zohar Peled's comment -  
+            // is brief, but less readable
+            List<string> query = Enumerable
+              .Range((int)model.StartWorkHours.TimeOfDay.TotalMinutes / IntervalParameter, (int)(SpanHours.TotalMinutes / IntervalParameter))
+              .Select(i => DateTime.Today
+                 .AddMinutes(i * (double)IntervalParameter) // AddHours is redundant
+                 .ToString("HH:mm"))                        // Let's provide HH:mm format 
+              .ToList();
+
+            model.WorkHours = query;
+            ///////////////////////////////////////////////////////////////////////////////////////////////
+            return PartialView("CalendarPartialView", model);
+        }
+
+
         [HttpGet]
         [Authorize(Roles = "PatientRole")]
-        public async Task<IActionResult> BookDoc(int? id)
+        public async Task<IActionResult> BookDoc(int? id, string selectedDate)
         {
 
             if (id == null)
@@ -101,6 +137,46 @@ namespace ResMed.Controllers
             var doctor = await _db.Doctors.Include(m => m.Specializations).Where(m => m.Id == id).FirstOrDefaultAsync();
 
             VisitVM.Doctor = doctor;
+
+
+
+            //DateTime dateFromView;
+            //if (!string.IsNullOrEmpty(selectedDate))
+            //{
+            //    dateFromView = DateTime.Parse(selectedDate);
+            //}
+            //else
+            //{
+            //    dateFromView = new DateTime(2018,11,30);
+            //}
+
+            //var takenHoursList = (from v in _db.Visits
+            //                      where (v.DoctorId == doctor.Id
+            //                      && v.Date.Day == dateFromView.Day
+            //                      && v.Date.Month == dateFromView.Month
+            //                      && v.Date.Year == dateFromView.Year)
+            //                      select v.Date.TimeOfDay.ToString(@"hh\:mm")).ToList();
+
+            //VisitVM.Doctor.TakenHoursInDay = takenHoursList;
+
+
+
+
+            ////Pętla generująca listę stringów odnośnie dostępnych godzin dla danego doktora
+            //int IntervalParameter = doctor.AverageVisitTime;
+            //TimeSpan SpanHours = doctor.EndWorkHours.TimeOfDay - doctor.StartWorkHours.TimeOfDay;
+
+            //// .Range(0, 1440 / IntervalParameter) - see Zohar Peled's comment -  
+            //// is brief, but less readable
+            //List<string> query = Enumerable
+            //  .Range((int)doctor.StartWorkHours.TimeOfDay.TotalMinutes / IntervalParameter, (int)(SpanHours.TotalMinutes / IntervalParameter))
+            //  .Select(i => DateTime.Today
+            //     .AddMinutes(i * (double)IntervalParameter) // AddHours is redundant
+            //     .ToString("HH:mm"))                        // Let's provide HH:mm format 
+            //  .ToList();
+
+            //VisitVM.Doctor.WorkHours = query;
+            /////////////////////////////////////////////////////////////////////////////////////////////////
 
 
             //tablica logiczna zawierająca dane true/false czy dany dzień jest pracujący u danego lekarza

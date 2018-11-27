@@ -76,5 +76,14 @@ namespace ResMed.Models
         [NotMapped]
         public int[] WorkDaysArr { get; set; }
 
+        [NotMapped]
+        public List<string> WorkHours { get; set; }
+
+        [NotMapped]
+        public List<string> TakenHoursInDay { get; set; }
+
+        [NotMapped]
+        public DateTime SelectedDate { get; set; }
+
     }
 }

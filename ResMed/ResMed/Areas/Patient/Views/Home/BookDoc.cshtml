@@ -8,6 +8,8 @@
 
 <head>
     <link rel="stylesheet" type="text/css" href="~/css/GoogleMapsAPI.css" />
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
+    <script src="~/js/FillInTime.js"></script>
 </head>
 
 
@@ -48,28 +50,24 @@
 
                 @*<input type="hidden" id="selectedDate" /> ukryte pole które przechwyca klikniętą datę w kalendarzu*@
                 <label asp-for="@Model.Visit.Date"></label>
-                <input asp-for="@Model.Visit.Date" type="text" id="datepicker" placeholder="wybierz datę" class="form-control" />
+                <input asp-for="@Model.Visit.Date" type="text" id="datepicker" placeholder="wybierz datę" class="form-control" required />
 
                 @*<div id="datepicker"></div>*@
                 <label asp-for="@Model.Visit.Time"></label>
-                <input asp-for="@Model.Visit.Time" value="" type="time" class="timepicker form-control" />
-            </div>
-            <div class="form-group">
+                <div id="calendarRender"> @*Div z widokiem partialview generującym wolne godziny*@
 
+                </div>
 
+                @Model.Doctor.SelectedDate
 
+                <input asp-for="@Model.Visit.Time" type="time" id="VisitTime" class="form-control time" hidden />
             </div>
             <div class="form-group">
                 <input type="submit" value="Zarezerwuj" class="btn btn-default" asp-route-id="@Model.Doctor.Id" />
                 <a asp-action="Index" class="btn btn-danger">Powrót</a>
             </div>
+
         </div>
-
-        <script type="text/javascript">
-
-
-
-        </script>
 
         <div class="col-md-4">
             <div class="form-group">
@@ -111,32 +109,43 @@
                 dateFormat: 'dd-mm-yy',
                 firstDay: 1,
                 beforeShowDay: function (date) {
-
                     var myArray = [];
 
-    @foreach (var d in Model.Doctor.WorkDaysArr)
-    {
-        @:myArray.push(@d);
-    }
-
-            console.log(myArray);
-
+                    @foreach (var d in Model.Doctor.WorkDaysArr)
+                    {
+                        @:myArray.push(@d);
+                    }
 
                     var day = date.getDay();
                     return [($.inArray(day, myArray) >= 0)];
-                    console.log(myArray);
-                }
+                },
+                onSelect: function () {
+                        $.ajax({
+                            url: '@Url.Action("Calendar", "Home", new { area = "Patient" })' ,
+                            type: "GET",
+                            data: {
+                                id: @Model.Doctor.Id,
+                                Date: $("#datepicker").val()
+                                    }
+                            })
+                            .done(function (partialViewResult) {
+                                $("#calendarRender").html(partialViewResult);
+                            });
+                    }
             });
         });
 
-        $('.timepicker').timepicker({
+        $('#timepicker').timepicker({
             timeFormat: 'HH:mm',
             interval: @Model.Doctor.AverageVisitTime,
             minTime: '@Model.Doctor.StartWorkHours.TimeOfDay',
-            maxTime: '@Model.Doctor.EndWorkHours.TimeOfDay',
-            dynamic: false,
-            dropdown: true,
-            scrollbar: true
+            maxTime: '@Model.Doctor.EndWorkHours.TimeOfDay'
         });
+
+        //$('#timepicker').on('showTimepicker', function () {
+        //    $('.ui-timepicker-viewport li').filter(function (index) {
+        //        return ($(this).text() == '10:00');
+        //    }).remove();
+        //});
     </script>
 }
