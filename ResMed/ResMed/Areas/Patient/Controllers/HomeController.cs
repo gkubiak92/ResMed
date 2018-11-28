@@ -62,7 +62,7 @@ namespace ResMed.Controllers
             if (!string.IsNullOrEmpty(id) && !string.IsNullOrEmpty(spec))
             {
                 var doctorPlaceSpecList = await _db.Doctors.Include(m => m.Specializations)
-                                                    .Where(m => m.Address == id)
+                                                    .Where(m => m.Address.Contains(id))
                                                     .Where(s => s.Specializations.Name == spec)
                                                     .ToListAsync();
                 return View(doctorPlaceSpecList);
@@ -79,7 +79,7 @@ namespace ResMed.Controllers
             if (!string.IsNullOrEmpty(id) && string.IsNullOrEmpty(spec))
             {
                 var doctorPlaceOnlyList = await _db.Doctors.Include(m => m.Specializations)
-                                                    .Where(m => m.Address == id)
+                                                    .Where(m => m.Address.Contains(id))
                                                     .ToListAsync();
                 return View(doctorPlaceOnlyList);
             }
@@ -240,6 +240,8 @@ namespace ResMed.Controllers
                 TempData["Error"] = "Error";
                 return RedirectToAction(nameof(BookDoc));
             }
+
+            vis.IsReviewed = false;
 
             TempData["Error"] = "";
             _db.Visits.Add(vis);

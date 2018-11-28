@@ -3,15 +3,17 @@ using System;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 using ResMed.Data;
 
 namespace ResMed.Data.Migrations
 {
     [DbContext(typeof(ApplicationDbContext))]
-    partial class ApplicationDbContextModelSnapshot : ModelSnapshot
+    [Migration("20181128173118_AddIsReviewedToVisitModel")]
+    partial class AddIsReviewedToVisitModel
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -256,29 +258,6 @@ namespace ResMed.Data.Migrations
                     b.ToTable("Patients");
                 });
 
-            modelBuilder.Entity("ResMed.Models.Reviews", b =>
-                {
-                    b.Property<int>("Id")
-                        .ValueGeneratedOnAdd()
-                        .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
-
-                    b.Property<int>("DoctorId");
-
-                    b.Property<int>("PatientId");
-
-                    b.Property<int>("Rating");
-
-                    b.Property<string>("Text");
-
-                    b.HasKey("Id");
-
-                    b.HasIndex("DoctorId");
-
-                    b.HasIndex("PatientId");
-
-                    b.ToTable("Reviews");
-                });
-
             modelBuilder.Entity("ResMed.Models.Specializations", b =>
                 {
                     b.Property<int>("Id")
@@ -390,19 +369,6 @@ namespace ResMed.Data.Migrations
                     b.HasOne("ResMed.Models.Specializations", "Specializations")
                         .WithMany()
                         .HasForeignKey("SpecializationId");
-                });
-
-            modelBuilder.Entity("ResMed.Models.Reviews", b =>
-                {
-                    b.HasOne("ResMed.Models.Doctors", "Doctor")
-                        .WithMany()
-                        .HasForeignKey("DoctorId")
-                        .OnDelete(DeleteBehavior.Cascade);
-
-                    b.HasOne("ResMed.Models.Patients", "Patient")
-                        .WithMany()
-                        .HasForeignKey("PatientId")
-                        .OnDelete(DeleteBehavior.Cascade);
                 });
 
             modelBuilder.Entity("ResMed.Models.Visits", b =>

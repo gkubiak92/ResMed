@@ -7,17 +7,17 @@ using System.Threading.Tasks;
 
 namespace ResMed.Models
 {
-    public class Visits
+    public class Reviews
     {
         public int Id { get; set; }
 
-        [Display(Name = "Data wizyty")]
-        [DisplayFormat(ApplyFormatInEditMode = true, DataFormatString = "{0:dd/MM/yyyy}")]
-        public DateTime Date { get; set; }
+        [Display(Name = "Treść")]
+        public string Text { get; set; }
 
-        [NotMapped]
-        [Display(Name = "Godzina wizyty")]
-        public DateTime Time { get; set; }
+        [Required]
+        [Display(Name = "Ocena")]
+        [Range(1,5, ErrorMessage = "Ocena musi być w przedziale od 1 do 5")]
+        public int Rating { get; set; }
 
         [ForeignKey("Doctor")]
         public int DoctorId { get; set; }
@@ -30,8 +30,5 @@ namespace ResMed.Models
 
         [Display(Name = "Pacjent")]
         public virtual Patients Patient { get; set; }
-
-        [Display(Name = "Oceniono")]
-        public bool IsReviewed { get; set; }
     }
 }

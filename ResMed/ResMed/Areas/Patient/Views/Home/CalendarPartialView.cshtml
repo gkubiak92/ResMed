@@ -1,29 +1,16 @@
 ﻿@model ResMed.Models.Doctors
 
-
-@*<p>@Model.FirstName</p>*@
-<p>@Model.SelectedDate</p>
-@*<p>@Model.LastName</p>*@
-
-@*@foreach (var item in Model.WorkHours)
+<div class="form-group">
+    @foreach (var item in Model.WorkHours)
     {
-        <p>@item</p>
-    }*@
-
-@*@foreach (var item in Model.TakenHoursInDay)
-    {
-        <p>@item</p>
-    }*@
-
-@foreach (var item in Model.WorkHours)
-{
-    if (Model.TakenHoursInDay.Contains(item))
-    {
-        <button class="btn btn-danger" disabled>@item</button>
+        if (Model.TakenHoursInDay.Contains(item))
+        {
+            <button class="btn btn-danger" disabled>@item</button>
+        }
+        else
+        {
+            <button type="button" onclick="fillInTime(this.textContent)" class="btn btn-success">@item</button>//po kliknięciu odpala sie javascript wypełniający godzinę
+        }
     }
-    else
-    {
-        <button type="button" onclick="fillInTime(this.textContent)" class="btn btn-success">@item</button>
-    }
-}
+</div>
 

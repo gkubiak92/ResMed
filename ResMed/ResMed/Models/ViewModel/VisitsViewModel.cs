@@ -9,5 +9,6 @@ namespace ResMed.Models.ViewModel
     {
         public Visits Visit { get; set; }
         public Doctors Doctor { get; set; }
+        public Reviews Review { get; set; }
     }
 }

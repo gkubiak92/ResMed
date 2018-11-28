@@ -20,5 +20,6 @@ namespace ResMed.Data
         public DbSet<ApplicationUser> ApplicationUser { get; set; }
         public DbSet<Specializations> Specializations { get; set; }
         public DbSet<Visits> Visits { get; set; }
+        public DbSet<Reviews> Reviews { get; set; }
     }
 }

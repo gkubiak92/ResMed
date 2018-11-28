@@ -1,0 +1,58 @@
+﻿@model ResMed.Models.ViewModel.VisitsViewModel
+
+@{
+    ViewData["Title"] = "Oceń wizytę";
+}
+
+<head>
+    <link rel="stylesheet" href="~/css/StarsRating.css" />
+</head>
+
+<h2>Oceń wizytę</h2>
+
+<div class="row">
+    <div class="col-md-4">
+        <form asp-action="Review" method="post">
+            <div asp-validation-summary="All" class="text-danger"></div>
+            <div class="form-group">
+                <label asp-for="Review.Rating" class="control-label"></label>
+                <br />
+                <fieldset class="rating">
+                    <input type="radio" id="star5" name="rating" value="5" onclick="Rate(this.value)" /><label class="full" for="star5"></label>
+                    <input type="radio" id="star4" name="rating" value="4" onclick="Rate(this.value)" /><label class="full" for="star4"></label>
+                    <input type="radio" id="star3" name="rating" value="3" onclick="Rate(this.value)" /><label class="full" for="star3"></label>
+                    <input type="radio" id="star2" name="rating" value="2" onclick="Rate(this.value)" /><label class="full" for="star2"></label>
+                    <input type="radio" id="star1" name="rating" value="1" onclick="Rate(this.value)" /><label class="full" for="star1"></label>
+                </fieldset>
+
+
+                <input asp-for="Review.Rating" id="Rating" hidden />
+                <br />
+                <span asp-validation-for="Review.Rating" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="Review.Text" class="control-label"></label>
+                <textarea style="height:180px; resize:none;" asp-for="Review.Text" class="form-control"></textarea>
+
+                <span asp-validation-for="Review.Text" class="text-danger"></span>
+            </div>
+
+            <div class="form-group" hidden>
+                <input asp-for="Review.DoctorId" class="form-control" asp-items="ViewBag.DoctorId">
+                <input asp-for="Review.PatientId" class="form-control" asp-items="ViewBag.PatientId">
+            </div>
+            <div class="form-group">
+                <input type="submit" value="Oceń" class="btn btn-success" id="@Model.Visit.Id" /> @*przekazuję tutaj dodatkowo id wizyty aby ominąć problem z kluczem obcym*@
+                <a asp-action="Index" class="btn btn-danger">Powrót</a>
+            </div>
+
+        </form>
+    </div>
+</div>
+
+<script>
+    function Rate(val) {
+        document.getElementById("Rating").value = val;
+    }
+</script>
+
