@@ -120,16 +120,23 @@ namespace ResMed.Areas.Patient.Controllers
 
             var review = VisitVM.Review;
 
-            //var vis = VisitVM.Visit;
-            //vis.IsReviewed = true;
-
             var vis = _db.Visits.Find(id);
             vis.IsReviewed = true;
 
             _db.Visits.Update(vis);
-
             _db.Reviews.Add(review);
-            //_db.Visits.Update(vis);
+
+            var doc = _db.Doctors.Find(VisitVM.Review.DoctorId);
+
+            doc.RatingCount++;
+
+            int sum = (from d in _db.Reviews
+                      where d.DoctorId == doc.Id
+                      select d.Rating).ToList().Sum();
+
+
+            doc.AverageRating = (double)(sum + review.Rating) / doc.RatingCount;
+            _db.Doctors.Update(doc);
 
             await _db.SaveChangesAsync();
             return (RedirectToAction(nameof(Index)));

@@ -2,7 +2,7 @@
 
 
 @{
-    ViewData["Title"] = "Zarezerwuj doktora";
+    ViewData["Title"] = "Zarezerwuj lekarza";
     Layout = "~/Views/Shared/_Layout.cshtml";
 }
 
@@ -10,6 +10,20 @@
     <link rel="stylesheet" type="text/css" href="~/css/GoogleMapsAPI.css" />
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
     <script src="~/js/FillInTime.js"></script> @*skrypt do ustawiania godziny wizyty w odpowiednim polu input*@
+    <link rel="stylesheet" href="~/css/StarsRating.css" />
+
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
+    <style>
+        .checked {
+            color: orange;
+        }
+
+        #reviewCart {
+            background: #efefef;
+            border-radius: 10px;
+            padding: 15px;
+        }
+    </style>
 </head>
 
 
@@ -48,7 +62,6 @@
             </div>
             <div class="form-group">
 
-                @*<input type="hidden" id="selectedDate" /> ukryte pole które przechwyca klikniętą datę w kalendarzu*@
                 <label asp-for="@Model.Visit.Date"></label>
                 <input asp-for="@Model.Visit.Date" type="text" id="datepicker" placeholder="wybierz datę" class="form-control" required />
 
@@ -90,6 +103,37 @@
                 <script src="https://maps.googleapis.com/maps/api/js?key=AIzaSyDsCfRtCAXWGgSvMo7uEv8XqfQCDnGSWas&libraries=places&callback=initMap"
                         async defer></script>
 
+            </div>
+        </div>
+        <div class="col-md-4">
+            <div class="form-group">
+
+                <h2>Ostatnie recenzje</h2>
+                @if (Model.ReviewsList.Count() > 0)
+                {
+                    @foreach (var item in Model.ReviewsList)
+                    {
+                        <div id="reviewCart">
+
+                            <p>
+                                @for (int i = 0; i < item.Rating; i++)
+                                {
+                                    <span class="fa fa-star checked"></span>
+                                }
+                            </p>
+                            <p>
+                                @item.Text
+                            </p>
+                        </div>
+                        <br />
+                    }
+                }
+                else
+                {
+                    <p>
+                        <i>Ten lekarz nie ma jeszcze żadnych recenzji</i>
+                    </p>
+                }
             </div>
         </div>
     </div>

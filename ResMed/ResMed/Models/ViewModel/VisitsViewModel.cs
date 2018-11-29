@@ -10,5 +10,6 @@ namespace ResMed.Models.ViewModel
         public Visits Visit { get; set; }
         public Doctors Doctor { get; set; }
         public Reviews Review { get; set; }
+        public IEnumerable<Reviews> ReviewsList { get; set; }
     }
 }

@@ -138,6 +138,9 @@ namespace ResMed.Controllers
 
             VisitVM.Doctor = doctor;
 
+            VisitVM.ReviewsList = (from d in _db.Reviews
+                                   where d.DoctorId == doctor.Id
+                                   select d).ToList().OrderBy(d => d.Id).Take(5);
 
 
             //DateTime dateFromView;

@@ -52,14 +52,14 @@ namespace ResMed.Models
         [Display(Name = "Koniec pracy")]
         public DateTime EndWorkHours { get; set; }
 
-        [Display(Name ="Poniedziałek")]
+        [Display(Name = "Poniedziałek")]
         public bool WorkingMonday { get; set; }
 
         [Display(Name = "Wtorek")]
         public bool WorkingTuesday { get; set; }
 
         [Display(Name = "Środa")]
-        public bool WorkingWednesday{ get; set; }
+        public bool WorkingWednesday { get; set; }
 
         [Display(Name = "Czwartek")]
         public bool WorkingThursday { get; set; }
@@ -84,6 +84,12 @@ namespace ResMed.Models
 
         [NotMapped]
         public DateTime SelectedDate { get; set; }
+
+        [Display(Name = "Średnia ocen")]
+        public double AverageRating { get; set; }
+
+        [Display(Name = "Ilość ocen")]
+        public int RatingCount { get; set; }
 
     }
 }

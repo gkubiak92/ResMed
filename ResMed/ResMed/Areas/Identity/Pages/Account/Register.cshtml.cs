@@ -138,7 +138,9 @@ namespace ResMed.Areas.Identity.Pages.Account
                             FirstName = Input.FirstName,
                             LastName = Input.LastName,
                             LicenseNr = "",
-                            Description = ""
+                            Description = "",
+                            AverageRating = 0,
+                            RatingCount = 0
                         };
 
                         _db.Doctors.Add(doctor);
