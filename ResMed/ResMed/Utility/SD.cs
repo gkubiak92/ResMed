@@ -10,5 +10,8 @@ namespace ResMed.Utility
         public const string AdminRole = "AdminRole";
         public const string DoctorRole = "DoctorRole";
         public const string PatientRole = "PatientRole";
+
+        public const string ImageFolder = @"images\DoctorImages";
+        public const string DefaultDoctorImage = "doctor-blank-profile.png";
     }
 }

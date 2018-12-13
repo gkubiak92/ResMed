@@ -14,6 +14,8 @@ namespace ResMed.Models
 
         public string UserId { get; set; }
 
+        [Display(Name = "Płeć")]
+        public string Gender { get; set; }
 
         [Display(Name = "Imię")]
         public string FirstName { get; set; }

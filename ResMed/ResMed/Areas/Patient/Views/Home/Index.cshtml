@@ -33,11 +33,21 @@
             <div class="navbar-collapse collapse">
                 <ul class="nav navbar-nav navbar-right">
                     <li>@Html.ActionLink("Domowa", "Index", "Home")</li>
+                    @if (User.IsInRole("PatientRole"))
+                    {
+                        <li><a asp-area="Patient" asp-controller="MyVisits" asp-action="Index">Moje wizyty</a></li>
+                    }
+                    @if (User.IsInRole("DoctorRole"))
+                    {
+                        <li><a asp-area="Doctor" asp-controller="MyPatients" asp-action="Index">Moje wizyty</a></li>
+                    }
                     <li><partial name="_LoginPartial" /></li>
                 </ul>
             </div>
         </div>
     </div>
+
+    <partial name="_CookieConsentPartial" />
 
     <div class="row">
         <div class="col-md-8">
@@ -55,7 +65,7 @@
                 </div>
                 <br />
                 <div class="row">
-                    <button type="submit" class="btn btn-info btn-lg">
+                    <button type="submit" class="btn btn-primary btn-lg">
                         <span class="fa fa-search"></span> Szukaj
                     </button>
                 </div>

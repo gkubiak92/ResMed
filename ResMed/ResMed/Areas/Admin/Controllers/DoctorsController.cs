@@ -103,8 +103,8 @@ namespace ResMed.Areas.Doctor.Controllers
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> Delete(int id)
         {
-            var specialization = await _db.Specializations.FindAsync(id);
-            _db.Specializations.Remove(specialization);
+            var doctor = await _db.Doctors.FindAsync(id);
+            _db.Doctors.Remove(doctor);
             await _db.SaveChangesAsync();
             return RedirectToAction(nameof(Index));
         }

@@ -45,18 +45,26 @@ namespace ResMed.Areas.Identity.Pages.Account.Manage
 
         public class InputModel
         {
-
+            [Required]
             [Display(Name = "Imię")]
             public string FirstName { get; set; }
 
-
+            [Required]
             [Display(Name = "Nazwisko")]
             public string LastName { get; set; }
 
             [Phone]
             [Display(Name = "Nr telefonu")]
             public string PhoneNumber { get; set; }
-            
+
+            [Required]
+            [Display(Name = "Płeć")]
+            public string Gender { get; set; }
+
+            [Required]
+            [Display(Name ="Data urodzenia")]
+            public DateTime Birthday { get; set; }
+
         }
 
 
@@ -71,12 +79,14 @@ namespace ResMed.Areas.Identity.Pages.Account.Manage
 
 
             var patient = GetActualLoggedPatientFromDb(user); // pobiera obiekt aktualnego doktora z bazy danych
-            
+
             Input = new InputModel
             {
                 FirstName = patient.FirstName,
                 LastName = patient.LastName,
                 PhoneNumber = phoneNumber,
+                Gender = patient.Gender,
+                Birthday = patient.Birthday
             };
 
             return Page();
@@ -121,13 +131,27 @@ namespace ResMed.Areas.Identity.Pages.Account.Manage
                 _db.Patients.Update(patient);
                 await _db.SaveChangesAsync();
             }
-            
+
+            if (Input.Gender != patient.LastName)
+            {
+                patient.Gender = Input.Gender;
+                _db.Patients.Update(patient);
+                await _db.SaveChangesAsync();
+            }
+
+            if(Input.Birthday != patient.Birthday)
+            {
+                patient.Birthday = Input.Birthday;
+                _db.Patients.Update(patient);
+                await _db.SaveChangesAsync();
+            }
+
             await _signInManager.RefreshSignInAsync(user);
             StatusMessage = "Twój profil został zaktualizowany";
             return RedirectToPage();
 
         }
-        
+
 
         /////////Metody///////////////
 

@@ -33,5 +33,6 @@ namespace ResMed.Models
 
         [Display(Name = "Oceniono")]
         public bool IsReviewed { get; set; }
+        
     }
 }

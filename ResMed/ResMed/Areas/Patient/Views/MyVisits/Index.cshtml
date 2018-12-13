@@ -6,7 +6,9 @@
 }
 
 <h2>Moje wizyty</h2>
+@Html.ActionLink("Ukryj/Pokaż archiwalne", "Index", new { hidePastVisits = ViewBag.HidePastVisitsParm }, new { @class = "btn btn-default" })
 
+<h4 style="background-color:rgba(151, 151, 151, 0.28); padding: 10px; border-radius: 10px;">Nadchodzące wizyty</h4>
 <table class="table table-striped">
     <thead>
         <tr>
@@ -19,47 +21,103 @@
             <th>
                 @Html.DisplayNameFor(model => model.Doctor)
             </th>
-            <th>Anulowanie</th>
-            <th>Oceń wizytę</th>
+            <th>Opcje wizyty</th>
         </tr>
     </thead>
     <tbody>
         @foreach (var item in Model)
         {
-            <tr>
-                <td>
-                    @Html.DisplayFor(modelItem => item.Date)
-                </td>
-                <td>
-                    @item.Date.TimeOfDay.ToString(@"hh\:mm")
-                </td>
-                <td>
-                    @Html.DisplayFor(modelItem => item.Doctor.FirstName)
-                    @Html.DisplayFor(modelItem => item.Doctor.LastName)
-                </td>
-                <td>
-                    @if (item.Date < DateTime.Today)
-                    {
-                        <a asp-action="Delete" asp-route-id="@item.Id" class="btn btn-sm btn-default disabled">Anuluj</a>
-                    }
-                    else
-                    {
-                        <a asp-action="Delete" asp-route-id="@item.Id" class="btn btn-sm btn-danger">Anuluj</a>
-                    }
-                </td>
-                @if (item.Date < DateTime.Today && !item.IsReviewed)
-                {
+            if (item.Date >= DateTime.Today)
+            {
+                <tr>
                     <td>
-                        <a asp-action="Review" asp-route-id="@item.Id" class="btn btn-sm btn-success">Oceń</a>
+                        @Html.DisplayFor(modelItem => item.Date)
                     </td>
-                }
-                else
-                {
                     <td>
-                        <a asp-action="Review" asp-route-id="@item.Id" class="btn btn-sm btn-default disabled">Oceń</a>
+                        @item.Date.TimeOfDay.ToString(@"hh\:mm")
                     </td>
-                }
-            </tr>
+                    <td>
+                        <img src="@item.Doctor.Image" style="height:80px;" />
+                        @Html.DisplayFor(modelItem => item.Doctor.FirstName)
+                        @Html.DisplayFor(modelItem => item.Doctor.LastName)
+                    </td>
+                    <td>
+                        @if (item.Date < DateTime.Today)
+                        {
+                            <a asp-action="Delete" asp-route-id="@item.Id" class="btn btn-sm btn-default disabled">Anuluj</a>
+                        }
+                        else
+                        {
+                            <a asp-action="Delete" asp-route-id="@item.Id" class="btn btn-sm btn-danger">Anuluj</a>
+                        }
+                        @if (item.Date < DateTime.Today && !item.IsReviewed)
+                        {
+                            <a asp-action="Review" asp-route-id="@item.Id" class="btn btn-sm btn-success">Oceń</a>
+                        }
+                        else
+                        {
+                            <a asp-action="Review" asp-route-id="@item.Id" class="btn btn-sm btn-default disabled">Oceń</a>
+                        }
+                    </td>
+                </tr>
+            }
+        }
+    </tbody>
+</table>
+
+<h4 style="background-color:rgba(151, 151, 151, 0.28); padding: 10px; border-radius: 10px;">Archiwalne wizyty</h4>
+<table class="table table-striped">
+    <thead>
+        <tr>
+            <th>
+                @Html.DisplayNameFor(model => model.Date)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.Time)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.Doctor)
+            </th>
+            <th>Opcje wizyty</th>
+        </tr>
+    </thead>
+    <tbody>
+        @foreach (var item in Model)
+        {
+            if (item.Date < DateTime.Today)
+            {
+                <tr>
+                    <td>
+                        @Html.DisplayFor(modelItem => item.Date)
+                    </td>
+                    <td>
+                        @item.Date.TimeOfDay.ToString(@"hh\:mm")
+                    </td>
+                    <td>
+                        <img src="@item.Doctor.Image" style="height:80px;" />
+                        @Html.DisplayFor(modelItem => item.Doctor.FirstName)
+                        @Html.DisplayFor(modelItem => item.Doctor.LastName)
+                    </td>
+                    <td>
+                        @if (item.Date < DateTime.Today)
+                        {
+                            <a asp-action="Delete" asp-route-id="@item.Id" class="btn btn-sm btn-default disabled">Anuluj</a>
+                        }
+                        else
+                        {
+                            <a asp-action="Delete" asp-route-id="@item.Id" class="btn btn-sm btn-danger">Anuluj</a>
+                        }
+                        @if (item.Date < DateTime.Today && !item.IsReviewed)
+                        {
+                            <a asp-action="Review" asp-route-id="@item.Id" class="btn btn-sm btn-success">Oceń</a>
+                        }
+                        else
+                        {
+                            <a asp-action="Review" asp-route-id="@item.Id" class="btn btn-sm btn-default disabled">Oceń</a>
+                        }
+                    </td>
+                </tr>
+            }
         }
     </tbody>
 </table>

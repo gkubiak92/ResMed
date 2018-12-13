@@ -13,6 +13,8 @@ using ResMed.Data;
 using ResMed.Models;
 using ResMed.Utility;
 using ResMed.Extensions;
+using Microsoft.AspNetCore.Hosting.Internal;
+using System.IO;
 
 namespace ResMed.Areas.Identity.Pages.Account.Manage
 {
@@ -21,15 +23,18 @@ namespace ResMed.Areas.Identity.Pages.Account.Manage
         private readonly UserManager<IdentityUser> _userManager;
         private readonly SignInManager<IdentityUser> _signInManager;
         private readonly ApplicationDbContext _db;
+        private readonly HostingEnvironment _hostingEnvironment;
 
         public DoctorCart(
             UserManager<IdentityUser> userManager,
             SignInManager<IdentityUser> signInManager,
-            ApplicationDbContext db)
+            ApplicationDbContext db,
+            HostingEnvironment hostingEnvironment)
         {
             _userManager = userManager;
             _signInManager = signInManager;
             _db = db;
+            _hostingEnvironment = hostingEnvironment;
         }
 
         [Display(Name = "Nazwa użytkownika")]
@@ -46,6 +51,9 @@ namespace ResMed.Areas.Identity.Pages.Account.Manage
         public class InputModel
         {
 
+            [Display(Name = "Płeć")]
+            public string Gender { get; set; }
+
             [Display(Name = "Imię")]
             public string FirstName { get; set; }
 
@@ -56,6 +64,8 @@ namespace ResMed.Areas.Identity.Pages.Account.Manage
             [Phone]
             [Display(Name = "Nr telefonu")]
             public string PhoneNumber { get; set; }
+
+            public string Image { get; set; }
 
 
             //Pola dodatkowe Input dla Doktora
@@ -138,6 +148,8 @@ namespace ResMed.Areas.Identity.Pages.Account.Manage
 
             Input = new InputModel
             {
+                Gender = doctor.Gender,
+                Image = doctor.Image,
                 FirstName = doctor.FirstName,
                 LastName = doctor.LastName,
                 PhoneNumber = phoneNumber,
@@ -245,6 +257,49 @@ namespace ResMed.Areas.Identity.Pages.Account.Manage
                 _db.Doctors.Update(doctor);
                 await _db.SaveChangesAsync();
             }
+            if (Input.Gender != doctor.Gender)
+            {
+                doctor.Gender = Input.Gender;
+                _db.Doctors.Update(doctor);
+                await _db.SaveChangesAsync();
+            }
+
+
+
+            //Zapisanie zdjęcia profilowego
+
+            string webRootPath = _hostingEnvironment.WebRootPath;
+            var files = HttpContext.Request.Form.Files;
+
+            if (string.IsNullOrEmpty(doctor.Image))
+            {
+                //var uploads = Path.Combine(webRootPath, SD.ImageFolder + @"\" + SD.DefaultDoctorImage);
+                //System.IO.File.Copy(uploads, webRootPath + @"\" + SD.ImageFolder + @"\" + doctor.Id + ".png", true);
+                string defaultImagePath = @"\" + SD.ImageFolder + @"\" + SD.DefaultDoctorImage;
+                doctor.Image = defaultImagePath;
+            }
+
+            if (files.Count != 0)
+            {
+                //Image has been uploaded
+                var uploads = Path.Combine(webRootPath, SD.ImageFolder);
+                var extension = Path.GetExtension(files[0].FileName);
+
+                using (var filestream = new FileStream(Path.Combine(uploads, doctor.Id + extension), FileMode.Create))
+                {
+                    files[0].CopyTo(filestream);
+                }
+                doctor.Image = @"\" + SD.ImageFolder + @"\" + doctor.Id + extension;
+            }
+            //else
+            //{
+            //    when user does not upload image
+            //    var uploads = Path.Combine(webRootPath, SD.ImageFolder + @"\" + SD.DefaultDoctorImage);
+            //    System.IO.File.Copy(uploads, webRootPath + @"\" + SD.ImageFolder + @"\" + doctor.Id + ".png", true);
+            //    doctor.Image = @"\" + SD.ImageFolder + @"\" + doctor.Id + ".png";
+            //}
+            await _db.SaveChangesAsync();
+
 
 
             //bool[] workingDayArr = { Input.WorkingMonday,

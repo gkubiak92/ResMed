@@ -7,37 +7,52 @@
 
 <h2>Moje wizyty</h2>
 
-<p>
-    <a asp-action="Create">Dodaj nową</a>
-</p>
+<div class="col-md-3">
+    @using (Html.BeginForm(new { @class = "form-group" }))
+    {
+        <p>
+            Znajdź po imieniu:
+            @Html.TextBox("patientSearch", null, null, new { @class = "form-control"})
+            <input type="submit" value="Szukaj" class="btn btn-sm btn-default" />
+        </p>
+
+    }
+</div>
+
 <table class="table">
     <thead>
         <tr>
             <th>
-                @Html.DisplayNameFor(model => model.Date)
+                @Html.ActionLink("Data", "Index", new { sortOrder = ViewBag.DateSortParm })
             </th>
             <th>
-                @Html.DisplayNameFor(model => model.Patient)
+                @Html.ActionLink("Pacjent", "Index", new { sortOrder = ViewBag.NameSortParm })
             </th>
-            <th></th>
+            <th>Anulowanie</th>
         </tr>
     </thead>
     <tbody>
-@foreach (var item in Model) {
-        <tr>
-            <td>
-                @Html.DisplayFor(modelItem => item.Date)
-            </td>
-            <td>
-                @Html.DisplayFor(modelItem => item.Patient.FirstName)
-                @Html.DisplayFor(modelItem => item.Patient.LastName)
-            </td>
-            <td>
-                <a asp-action="Edit" asp-route-id="@item.Id">Edit</a> |
-                <a asp-action="Details" asp-route-id="@item.Id">Details</a> |
-                <a asp-action="Delete" asp-route-id="@item.Id">Delete</a>
-            </td>
-        </tr>
-}
+        @foreach (var item in Model)
+        {
+            <tr>
+                <td>
+                    @Html.DisplayFor(modelItem => item.Date)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.Patient.FirstName)
+                    @Html.DisplayFor(modelItem => item.Patient.LastName)
+                </td>
+                <td>
+                    @if (item.Date < DateTime.Today)
+                    {
+                        <a asp-action="Delete" asp-route-id="@item.Id" class="btn btn-sm btn-default disabled">Anuluj</a>
+                    }
+                    else
+                    {
+                        <a asp-action="Delete" asp-route-id="@item.Id" class="btn btn-sm btn-danger">Anuluj</a>
+                    }
+                </td>
+            </tr>
+        }
     </tbody>
 </table>

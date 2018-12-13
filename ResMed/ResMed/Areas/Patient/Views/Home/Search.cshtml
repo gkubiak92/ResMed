@@ -1,11 +1,15 @@
 ﻿@model IEnumerable<ResMed.Models.Doctors>
 
 @{
-    ViewData["Title"] = "Lista doktorów";
+    ViewData["Title"] = "Lista lekarzy";
     Layout = "~/Views/Shared/_Layout.cshtml";
 }
 
-<h2>Lista doktorów</h2>
+<head>
+    
+</head>
+
+<h2>Lista lekarzy</h2>
 
 <div class="row">
     <div class="col-md-12">
@@ -16,10 +20,9 @@
 
         @foreach (var item in Model)
         {
-            <div class="col-md-4">
-                @Html.DisplayFor(modelItem => item.Image)
+            <div class="col-md-3">
                 <p>
-                    <img src="~/images/DoctorCart/doctor-blank-profile.png" style="width:150px;" />
+                    <img src="@item.Image" style="height:250px; box-shadow: 3px 3px 1px #ccc;" />
                     <h3>
                         @Html.DisplayFor(modelItem => item.FirstName)
                         @Html.DisplayFor(modelItem => item.LastName)
@@ -28,12 +31,10 @@
                     @Html.DisplayFor(modelItem => item.Specializations.Name)
                     <br>
                 </p>
-                <p>
-                    @Html.DisplayFor(modelItem => item.Description)
-                </p>
                 @Html.DisplayFor(modelItem => item.Address)
                 <br>
-                <a asp-action="BookDoc" asp-route-id="@item.Id" class="btn btn-default">Umów wizytę</a>
+                <a asp-action="BookDoc" asp-route-id="@item.Id" class="btn btn-primary">
+                Umów wizytę</a>
                 <br /><br /><br />
             </div>
         }

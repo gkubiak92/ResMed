@@ -28,7 +28,7 @@
 
 
 <br />
-<h4>@ViewData["Title"]</h4>
+<h2>@ViewData["Title"]</h2>
 
 <form method="post">
     <div class="row">
@@ -49,17 +49,28 @@
 
     <div class="row">
         <div class="col-md-4">
-
-            <img src="~/images/DoctorCart/doctor-blank-profile.png" />
-
-
             <div class="form-group">
+                <h2></h2>
+                <img src="@Model.Doctor.Image" style="height: 350px;" />
+
                 <h2>
                     @Html.DisplayFor(model => model.Doctor.FirstName)
                     @Html.DisplayFor(model => model.Doctor.LastName)
                 </h2>
                 <h4>@Html.DisplayFor(model => model.Doctor.Specializations.Name)</h4>
+
+                @for (int i = 0; i < Model.Doctor.AverageRating; i++)
+                {
+                    <span class="fa fa-star checked"></span>
+                }
+
             </div>
+
+
+        </div>
+
+        <div class="col-md-4">
+            <h2>Umów wizytę</h2>
             <div class="form-group">
 
                 <label asp-for="@Model.Visit.Date"></label>
@@ -67,30 +78,31 @@
 
                 @*<div id="datepicker"></div>*@
                 <label asp-for="@Model.Visit.Time"></label>
-                <input asp-for="@Model.Visit.Time" type="time" id="VisitTime" class="form-control time" readonly />
+                <input type="time" id="VisitTime" class="form-control time" readonly required/>
                 <br />
                 <div id="calendarRender">
                     @*Div z widokiem partialview generującym wolne godziny*@
-
                 </div>
             </div>
             <div class="form-group">
-                <input type="submit" value="Zarezerwuj" class="btn btn-default" asp-route-id="@Model.Doctor.Id" />
+                <input type="submit" value="Zarezerwuj" class="btn btn-success" asp-route-id="@Model.Doctor.Id" />
                 <a asp-action="Index" class="btn btn-danger">Powrót</a>
             </div>
-
         </div>
 
         <div class="col-md-4">
+
             <div class="form-group">
                 <h2>Jak dojechać</h2>
+
+                <p>@Model.Doctor.Address</p>
 
                 <input type="hidden" asp-for="@Model.Doctor.Address" id="pac-input" />
 
                 @*Google Places Api*@
 
                 <div id="infowindow-content">
-                    <img src="" width="16" height="16" id="place-icon">
+                    <img src="" width="14" height="14" id="place-icon">
                     <span id="place-name" class="title"></span><br>
                     <span id="place-address"></span>
                 </div>
@@ -105,7 +117,9 @@
 
             </div>
         </div>
-        <div class="col-md-4">
+    </div>
+    <div class="row">
+        <div class="col-md-6">
             <div class="form-group">
 
                 <h2>Ostatnie recenzje</h2>

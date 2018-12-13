@@ -34,16 +34,30 @@ namespace ResMed.Areas.Patient.Controllers
         }
 
 
-        public async Task<IActionResult> Index()
+        public async Task<IActionResult> Index(string hidePastVisits)
         {
+
+            ViewBag.HidePastVisitsParm = string.IsNullOrEmpty(hidePastVisits) ? "hide_past_visits" : "";
+            
             var user = await _userManager.GetUserAsync(User);
 
             var patient = GetActualLoggedPatientFromDb(user);
 
-            var visits = await _db.Visits.Include(v => v.Doctor).Where(v => v.PatientId == patient.Id).OrderBy(d => d.Date).ToListAsync();
 
+            IQueryable<Visits> visits = (from v in _db.Visits.Include(d => d.Doctor)
+                                         where v.PatientId == patient.Id
+                                         select v);
 
-            return View(visits);
+            switch(hidePastVisits)
+            {
+                case "hide_past_visits":
+                    visits = visits.Where(v => v.Date >= DateTime.Today);
+                    break;
+                default:
+                    break;
+            }
+
+            return View(visits.OrderByDescending(d => d.Date));
         }
 
 

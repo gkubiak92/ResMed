@@ -1,18 +1,17 @@
 ﻿@model ResMed.Models.Doctors
 
 @{
-    ViewData["Title"] = "Details";
+    ViewData["Title"] = "Szczegóły";
     Layout = "~/Views/Shared/_Layout.cshtml";
 }
 
-<h2>Details</h2>
+<h2>Szczegóły</h2>
 
 <div>
-    <h4>Doctors</h4>
     <hr />
     <dl class="dl-horizontal">
         <dt>
-            @Html.DisplayNameFor(model => model.UserId)
+            Id użytkownika
         </dt>
         <dd>
             @Html.DisplayFor(model => model.UserId)
@@ -48,13 +47,13 @@
             @Html.DisplayFor(model => model.Description)
         </dd>
         <dt>
-            @Html.DisplayNameFor(model => model.Image)
+            Zdjęcie profilowe
         </dt>
         <dd>
             @Html.DisplayFor(model => model.Image)
         </dd>
         <dt>
-            @Html.DisplayNameFor(model => model.Specializations)
+            Specjalizacja
         </dt>
         <dd>
             @Html.DisplayFor(model => model.Specializations.Name)
@@ -69,17 +68,17 @@
             @Html.DisplayNameFor(model => model.StartWorkHours)
         </dt>
         <dd>
-            @Html.DisplayFor(model => model.StartWorkHours)
+            @Html.DisplayFor(model => model.StartWorkHours.TimeOfDay)
         </dd>
         <dt>
             @Html.DisplayNameFor(model => model.EndWorkHours)
         </dt>
         <dd>
-            @Html.DisplayFor(model => model.EndWorkHours)
+            @Html.DisplayFor(model => model.EndWorkHours.TimeOfDay)
         </dd>
     </dl>
 </div>
 <div>
-    <a asp-action="Edit" asp-route-id="@Model.Id">Edit</a> |
-    <a asp-action="Index">Back to List</a>
+    <a asp-action="Edit" asp-route-id="@Model.Id" class="btn btn-primary">Edycja</a> |
+    <a asp-action="Index" class="btn btn-default">Powrót</a>
 </div>

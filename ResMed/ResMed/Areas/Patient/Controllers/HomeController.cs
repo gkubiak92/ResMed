@@ -65,7 +65,7 @@ namespace ResMed.Controllers
                                                     .Where(m => m.Address.Contains(id))
                                                     .Where(s => s.Specializations.Name == spec)
                                                     .ToListAsync();
-                return View(doctorPlaceSpecList);
+                return View(doctorPlaceSpecList.OrderBy(m => m.FirstName));
             }
 
             if (string.IsNullOrEmpty(id) && !string.IsNullOrEmpty(spec))
@@ -73,7 +73,7 @@ namespace ResMed.Controllers
                 var doctorSpecOnlyList = await _db.Doctors.Include(m => m.Specializations)
                                                     .Where(s => s.Specializations.Name == spec)
                                                     .ToListAsync();
-                return View(doctorSpecOnlyList);
+                return View(doctorSpecOnlyList.OrderBy(m => m.FirstName));
             }
 
             if (!string.IsNullOrEmpty(id) && string.IsNullOrEmpty(spec))
@@ -81,13 +81,13 @@ namespace ResMed.Controllers
                 var doctorPlaceOnlyList = await _db.Doctors.Include(m => m.Specializations)
                                                     .Where(m => m.Address.Contains(id))
                                                     .ToListAsync();
-                return View(doctorPlaceOnlyList);
+                return View(doctorPlaceOnlyList.OrderBy(m => m.FirstName));
             }
 
 
             var doctorList = await _db.Doctors.Include(m => m.Specializations)
                                                     .ToListAsync();
-            return View(doctorList);
+            return View(doctorList.OrderBy(m => m.FirstName));
         }
 
 
@@ -107,7 +107,7 @@ namespace ResMed.Controllers
 
             model.TakenHoursInDay = takenHoursList;
 
-            //Pętla generująca listę stringów odnośnie dostępnych godzin dla danego doktora
+            //Pętla generująca listę stringów odnośnie dostępnych godzin dla danego lekarza
             int IntervalParameter = model.AverageVisitTime;
             TimeSpan SpanHours = model.EndWorkHours.TimeOfDay - model.StartWorkHours.TimeOfDay;
 
@@ -140,7 +140,7 @@ namespace ResMed.Controllers
 
             VisitVM.ReviewsList = (from d in _db.Reviews
                                    where d.DoctorId == doctor.Id
-                                   select d).ToList().OrderBy(d => d.Id).Take(5);
+                                   select d).ToList().OrderByDescending(d => d.Id).Take(5);
 
 
             //DateTime dateFromView;
