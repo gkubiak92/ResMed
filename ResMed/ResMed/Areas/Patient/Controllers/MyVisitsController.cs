@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 using Microsoft.AspNetCore.Identity;
+using Microsoft.AspNetCore.Identity.UI.Services;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using ResMed.Data;
@@ -17,14 +18,17 @@ namespace ResMed.Areas.Patient.Controllers
 
         private readonly ApplicationDbContext _db;
         private readonly UserManager<IdentityUser> _userManager;
+        private readonly IEmailSender _emailSender;
 
         [BindProperty]
         public VisitsViewModel VisitVM { get; set; }
 
-        public MyVisitsController(ApplicationDbContext db, UserManager<IdentityUser> userManager)
+        public MyVisitsController(ApplicationDbContext db, UserManager<IdentityUser> userManager, IEmailSender emailSender)
         {
             _db = db;
             _userManager = userManager;
+            _emailSender = emailSender;
+
             VisitVM = new VisitsViewModel()
             {
                 Visit = new Visits(),
@@ -89,10 +93,17 @@ namespace ResMed.Areas.Patient.Controllers
         [ValidateAntiForgeryToken]
         public async Task<ActionResult> Delete(int id)
         {
+            var user = await _userManager.GetUserAsync(User);
+            var patient = GetActualLoggedPatientFromDb(user);
+
             var visit = await _db.Visits.FindAsync(id);
 
             _db.Visits.Remove(visit);
             await _db.SaveChangesAsync();
+
+            await _emailSender.SendEmailAsync(/*user.Email*/ "gkubiak92@gmail.com", $"Anulowanie wizyty dnia: {visit.Date.ToShortDateString()}",
+                        $"Pacjent {patient.FirstName + " " + patient.LastName} anulował wizytę o godzinie: {visit.Date.TimeOfDay}");
+
             return RedirectToAction(nameof(Index));
         }
 

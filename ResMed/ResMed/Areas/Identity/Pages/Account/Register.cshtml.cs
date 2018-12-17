@@ -139,6 +139,7 @@ namespace ResMed.Areas.Identity.Pages.Account
                             LastName = Input.LastName,
                             LicenseNr = "",
                             Description = "",
+                            Gender = "",
                             AverageRating = 0,
                             RatingCount = 0
                         };
@@ -156,6 +157,7 @@ namespace ResMed.Areas.Identity.Pages.Account
                             UserId = user.Id,
                             FirstName = Input.FirstName,
                             LastName = Input.LastName,
+                            Gender = "",
                             Description = ""
                         };
 
@@ -174,10 +176,10 @@ namespace ResMed.Areas.Identity.Pages.Account
                         values: new { userId = user.Id, code = code },
                         protocol: Request.Scheme);
 
-                    await _emailSender.SendEmailAsync(Input.Email, "Confirm your email",
-                        $"Please confirm your account by <a href='{HtmlEncoder.Default.Encode(callbackUrl)}'>clicking here</a>.");
+                    await _emailSender.SendEmailAsync(Input.Email, "Potwierdź swój adres e-mail",
+                        $"Potwierdź swoje konto <a href='{HtmlEncoder.Default.Encode(callbackUrl)}'>klikając tutaj</a>.");
 
-                    await _signInManager.SignInAsync(user, isPersistent: false);
+                    //await _signInManager.SignInAsync(user, isPersistent: false); linia ta zakomentowana aby uniknąć automatycznego zalogowania nowego użytkownika bez potwierdzenia maila
                     return LocalRedirect(returnUrl);
                 }
                 foreach (var error in result.Errors)

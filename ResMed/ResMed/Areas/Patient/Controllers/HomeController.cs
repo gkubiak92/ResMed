@@ -5,6 +5,7 @@ using System.Linq;
 using System.Threading.Tasks;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Identity;
+using Microsoft.AspNetCore.Identity.UI.Services;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.RazorPages;
 using Microsoft.AspNetCore.Mvc.Rendering;
@@ -21,15 +22,17 @@ namespace ResMed.Controllers
 
         private readonly ApplicationDbContext _db;
         private readonly UserManager<IdentityUser> _userManager;
+        private readonly IEmailSender _emailSender;
 
         [BindProperty]
         public VisitsViewModel VisitVM { get; set; }
 
 
-        public HomeController(ApplicationDbContext db, UserManager<IdentityUser> userManager)
+        public HomeController(ApplicationDbContext db, UserManager<IdentityUser> userManager, IEmailSender emailSender)
         {
             _db = db;
             _userManager = userManager;
+            _emailSender = emailSender;
             VisitVM = new VisitsViewModel();
         }
 
@@ -249,6 +252,11 @@ namespace ResMed.Controllers
             TempData["Error"] = "";
             _db.Visits.Add(vis);
             await _db.SaveChangesAsync();
+
+            await _emailSender.SendEmailAsync(/*user.Email*/ "gkubiak92@gmail.com", $"Nowa wizyta dnia {vis.Date.ToShortDateString()}",
+                        $"Masz nową wizytę dnia  {vis.Date.ToShortDateString()}" + "\n" +
+                        $"O godzinie: {vis.Date.TimeOfDay}" +
+                        $"Pacjent: {patient.FirstName + " " + patient.LastName}");
 
             return RedirectToAction(nameof(Index), "MyVisits");
         }

@@ -16,6 +16,7 @@ namespace ResMed.Areas.Identity
         {
             builder.ConfigureServices((context, services) => {
             });
+            
         }
     }
 }

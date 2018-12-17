@@ -78,7 +78,7 @@
 
                 @*<div id="datepicker"></div>*@
                 <label asp-for="@Model.Visit.Time"></label>
-                <input type="time" id="VisitTime" class="form-control time" readonly required/>
+                <input asp-for="@Model.Visit.Time" type="time" id="VisitTime" class="form-control time" readonly required/>
                 <br />
                 <div id="calendarRender">
                     @*Div z widokiem partialview generującym wolne godziny*@
