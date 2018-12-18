@@ -96,13 +96,23 @@ namespace ResMed.Areas.Patient.Controllers
             var user = await _userManager.GetUserAsync(User);
             var patient = GetActualLoggedPatientFromDb(user);
 
+
             var visit = await _db.Visits.FindAsync(id);
+
+            var docUser = GetDoctorUserFromDb(visit.DoctorId);
+            string docEmail = docUser.Email;
+
 
             _db.Visits.Remove(visit);
             await _db.SaveChangesAsync();
 
-            await _emailSender.SendEmailAsync(/*user.Email*/ "gkubiak92@gmail.com", $"Anulowanie wizyty dnia: {visit.Date.ToShortDateString()}",
+            //mail do lekarza
+            await _emailSender.SendEmailAsync(docEmail, $"Anulowanie wizyty dnia: {visit.Date.ToShortDateString()}",
                         $"Pacjent {patient.FirstName + " " + patient.LastName} anulował wizytę o godzinie: {visit.Date.TimeOfDay}");
+
+            //mail do pacjenta z potwierdzeniem anulowania wizyty
+            await _emailSender.SendEmailAsync(user.Email, $"Anulowanie wizyty",
+                $"Pomyślnie anulowałeś wizytę dnia: {visit.Date.ToShortDateString()}");
 
             return RedirectToAction(nameof(Index));
         }
@@ -167,7 +177,11 @@ namespace ResMed.Areas.Patient.Controllers
             return (RedirectToAction(nameof(Index)));
         }
 
-
+        private IdentityUser GetDoctorUserFromDb(int id)
+        {
+            var doc = _db.Doctors.Find(id);
+            return _db.Users.FirstOrDefault(x => x.Id == doc.UserId);
+        }
 
         private Patients GetActualLoggedPatientFromDb(IdentityUser user)
         {

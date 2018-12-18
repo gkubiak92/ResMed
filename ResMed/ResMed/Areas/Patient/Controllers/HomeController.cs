@@ -241,6 +241,10 @@ namespace ResMed.Controllers
                                 && v.Date == vis.Date)
                                 select v);
 
+            var docUser = GetDoctorUserFromDb(id); //pobiera dane konta USERA dla lekarza o danym id
+
+            string docEmail = docUser.Email;
+
             if (visDateCheck.Count() > 0)
             {
                 TempData["Error"] = "Error";
@@ -253,10 +257,15 @@ namespace ResMed.Controllers
             _db.Visits.Add(vis);
             await _db.SaveChangesAsync();
 
-            await _emailSender.SendEmailAsync(/*user.Email*/ "gkubiak92@gmail.com", $"Nowa wizyta dnia {vis.Date.ToShortDateString()}",
+            //linijka na potrzeby weryfikacji poprawnośći wysyłanego maila
+            //await _emailSender.SendEmailAsync("gkubiak92@gmail.com", $"Wysłano mail do {docEmail}", $"Testowa treść maila");
+
+
+            await _emailSender.SendEmailAsync(docEmail, $"Nowa wizyta dnia {vis.Date.ToShortDateString()}",
                         $"Masz nową wizytę dnia  {vis.Date.ToShortDateString()}" + "\n" +
                         $"O godzinie: {vis.Date.TimeOfDay}" +
                         $"Pacjent: {patient.FirstName + " " + patient.LastName}");
+
 
             return RedirectToAction(nameof(Index), "MyVisits");
         }
@@ -264,6 +273,12 @@ namespace ResMed.Controllers
         private Patients GetActualLoggedPatientFromDb(IdentityUser user)
         {
             return _db.Patients.FirstOrDefault(x => x.UserId == user.Id);
+        }
+
+        private IdentityUser GetDoctorUserFromDb(int id)
+        {
+            var doc = _db.Doctors.Find(id);
+            return _db.Users.FirstOrDefault(x => x.Id == doc.UserId);
         }
 
         [ResponseCache(Duration = 0, Location = ResponseCacheLocation.None, NoStore = true)]
