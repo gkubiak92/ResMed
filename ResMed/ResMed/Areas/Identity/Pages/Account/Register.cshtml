@@ -1,7 +1,7 @@
 ﻿@page
 @model RegisterModel
 @{
-    ViewData["Title"] = "Register";
+    ViewData["Title"] = "Rejestracja";
 }
 
 <h2>@ViewData["Title"]</h2>
@@ -9,9 +9,24 @@
 <div class="row">
     <div class="col-md-4">
         <form asp-route-returnUrl="@Model.ReturnUrl" method="post">
-            <h4>Create a new account.</h4>
+            <h4>Zarejestruj się</h4>
             <hr />
             <div asp-validation-summary="All" class="text-danger"></div>
+
+            <div class="form-group">
+                <label asp-for="Input.SelectedAccountType">Typ konta</label>
+                @{
+                    var selectList = new SelectList(
+                        new List<SelectListItem>
+                        {
+                                    new SelectListItem {Text = "Lekarz", Value = "DoctorRole"},
+                                    new SelectListItem {Text = "Pacjent", Value = "PatientRole"},
+                        }, "Value", "Text");
+                }
+                @Html.DropDownListFor(m => m.Input.SelectedAccountType, selectList, htmlAttributes: new { @class = "form-control", id = "Typ konta" })
+                @Html.ValidationMessageFor(x => x.Input.SelectedAccountType, "", new { @class = "text-danger" })
+            </div>
+
             <div class="form-group">
                 <label asp-for="Input.FirstName"></label>
                 <input asp-for="Input.FirstName" class="form-control" />
@@ -42,19 +57,7 @@
                 <input asp-for="Input.PhoneNumber" class="form-control" />
                 <span asp-validation-for="Input.PhoneNumber" class="text-danger"></span>
             </div>
-            <div class="form-group">
-                <label asp-for="Input.SelectedAccountType">Typ konta</label>
-                @{
-                    var selectList = new SelectList(
-                        new List<SelectListItem>
-                        {
-                            new SelectListItem {Text = "Doktor", Value = "DoctorRole"},
-                            new SelectListItem {Text = "Pacjent", Value = "PatientRole"},
-                        }, "Value", "Text");
-                }
-                @Html.DropDownListFor(m => m.Input.SelectedAccountType, selectList, htmlAttributes: new { @class = "form-control", id = "Typ konta" })
-                @Html.ValidationMessageFor(x => x.Input.SelectedAccountType, "", new { @class = "text-danger" })
-            </div>
+
             <button type="submit" class="btn btn-default">Zarejestruj</button>
         </form>
     </div>

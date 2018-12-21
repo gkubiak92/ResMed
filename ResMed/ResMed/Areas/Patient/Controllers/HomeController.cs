@@ -242,7 +242,7 @@ namespace ResMed.Controllers
                                 where (v.DoctorId == vis.DoctorId
                                 && v.Date == vis.Date)
                                 select v);
-
+            var doc = _db.Doctors.Find(id);
             var docUser = GetDoctorUserFromDb(id); //pobiera dane konta USERA dla lekarza o danym id
 
             string docEmail = docUser.Email;
@@ -267,6 +267,10 @@ namespace ResMed.Controllers
                         $"Masz nową wizytę dnia  {vis.Date.ToShortDateString()}" + "\n" +
                         $"O godzinie: {vis.Date.TimeOfDay}" +
                         $"Pacjent: {patient.FirstName + " " + patient.LastName}");
+
+            await _emailSender.SendEmailAsync(user.Email, $"Potwierzdenie rezerwacji wizyty",
+                $"Pomyślnie zarezerwowałeś wizytę dnia: {vis.Date.ToShortDateString()}" + "\n" +
+                $"Lekarz: {doc.FirstName + " " + doc.LastName}");
 
 
             return RedirectToAction(nameof(Index), "MyVisits");

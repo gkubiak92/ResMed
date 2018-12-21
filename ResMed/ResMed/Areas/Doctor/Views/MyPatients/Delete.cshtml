@@ -10,21 +10,26 @@
 <h3 class="text-danger">Czy jestes pewien, że chcesz anulować tą wizytę?</h3>
 <br />
 <div class="form-group">
-
-    <div class="form-group">
-        <label asp-for="@Model.Visit.Date"></label>: @Html.DisplayFor(model => model.Visit.Date)
-    </div>
-
-    <div class="form-group">
-        <label asp-for="@Model.Visit.Time"></label>: @Html.DisplayFor(model => model.Visit.Date.TimeOfDay)
-    </div>
-    <div>
-        <label>Pacjent</label>:
-        @Html.DisplayFor(model => model.Visit.Patient.FirstName) @Html.DisplayFor(model => model.Visit.Patient.LastName)
-    </div>
-    <br />
-
     <form asp-action="Delete">
+
+
+        <div class="form-group">
+            <label asp-for="@Model.Visit.Date"></label>: @Html.DisplayFor(model => model.Visit.Date)
+        </div>
+
+        <div class="form-group">
+            <label asp-for="@Model.Visit.Time"></label>: @Html.DisplayFor(model => model.Visit.Date.TimeOfDay)
+        </div>
+        <div>
+            <label>Pacjent</label>:
+            @Html.DisplayFor(model => model.Visit.Patient.FirstName) @Html.DisplayFor(model => model.Visit.Patient.LastName)
+        </div>
+        <div>
+            <label>Powód:</label>
+            <textarea style="height:180px; resize:none" name="reason" class="form-control"></textarea>
+        </div>
+        <br />
+
         <input type="hidden" asp-for="@Model.Visit.Id" />
         <input type="submit" value="Anuluj wizytę!" class="btn btn-danger" />
         <a asp-action="Index" class="btn btn-default">Powrót</a>

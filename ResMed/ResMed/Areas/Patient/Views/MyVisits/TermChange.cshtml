@@ -1,0 +1,103 @@
+﻿@model ResMed.Models.ViewModel.VisitsViewModel
+
+@{
+    ViewData["Title"] = "Zmiana terminu wizyty";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+<head>
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
+    <script src="~/js/FillInTime.js"></script> @*skrypt do ustawiania godziny wizyty w odpowiednim polu input*@
+</head>
+
+
+<h2>Zmiana terminu wizyty</h2>
+
+<h3>Wybierz nowy termin tej wizyty</h3>
+<div>
+    <hr />
+    <dl class="dl-horizontal">
+        <dt>
+            @Html.DisplayNameFor(model => model.Visit.Date)
+        </dt>
+        <dd>
+            @Html.DisplayFor(model => model.Visit.Date)
+        </dd>
+        <dt>
+            @Html.DisplayNameFor(model => model.Doctor)
+        </dt>
+        <dd>
+            @Html.DisplayFor(model => model.Doctor.FirstName)
+            @Html.DisplayFor(model => model.Doctor.LastName)
+        </dd>
+    </dl>
+
+    <form asp-action="TermChange" method="post">
+        <h2>Przełóż wizytę</h2>
+        <div class="form-group">
+            <label asp-for="@Model.Visit.Date"></label>
+            <input asp-for="@Model.Visit.Date" type="text" id="datepicker" placeholder="wybierz datę" class="form-control" autocomplete="off" required />
+
+            @*<div id="datepicker"></div>*@
+            <label asp-for="@Model.Visit.Time"></label>
+            <input asp-for="@Model.Visit.Time" type="time" value="@Model.Visit.Date.TimeOfDay" id="VisitTime" class="form-control time" readonly required />
+            <br />
+            <div id="calendarRender">
+                @*Div z widokiem partialview generującym wolne godziny*@
+            </div>
+        </div>
+
+        <input type="hidden" asp-for="@Model.Visit.Id" />
+        <input type="submit" value="Przełóż" class="btn btn-primary" /> |
+        <a asp-action="Index">Powrót</a>
+    </form>
+</div>
+
+
+@section Scripts{
+
+
+
+    @*Datepicker script*@
+    <script>
+
+        $(function () {
+            $("#datepicker").datepicker({
+                minDate: +1, maxDate: "+3M",
+                dateFormat: 'dd-mm-yy',
+                firstDay: 1,
+                beforeShowDay: function (date) {
+                    var myArray = [];
+
+                    @foreach (var d in Model.Doctor.WorkDaysArr)
+                    {
+                        @:myArray.push(@d);
+                    }
+
+                    var day = date.getDay();
+                    return [($.inArray(day, myArray) >= 0)];
+                },
+                onSelect: function () {
+                        $.ajax({
+                            url: '@Url.Action("Calendar", "Home", new { area = "Patient" })' ,
+                            type: "GET",
+                            data: {
+                                id: @Model.Doctor.Id,
+                                Date: $("#datepicker").val()
+                                    }
+                            })
+                            .done(function (partialViewResult) {
+                                $("#calendarRender").html(partialViewResult);
+                            });
+                    }
+            });
+        });
+
+        $('#timepicker').timepicker({
+            timeFormat: 'HH:mm',
+            interval: @Model.Doctor.AverageVisitTime,
+            minTime: '@Model.Doctor.StartWorkHours.TimeOfDay',
+            maxTime: '@Model.Doctor.EndWorkHours.TimeOfDay'
+        });
+    </script>
+}

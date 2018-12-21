@@ -44,10 +44,12 @@
                     <td>
                         @if (item.Date < DateTime.Today)
                         {
+                            <a asp-action="TermChange" asp-route-id="@item.Id" class="btn btn-sm btn-primary disabled">Przełóż</a>
                             <a asp-action="Delete" asp-route-id="@item.Id" class="btn btn-sm btn-default disabled">Anuluj</a>
                         }
                         else
                         {
+                            <a asp-action="TermChange" asp-route-id="@item.Id" class="btn btn-sm btn-primary">Przełóż</a>
                             <a asp-action="Delete" asp-route-id="@item.Id" class="btn btn-sm btn-danger">Anuluj</a>
                         }
                         @if (item.Date < DateTime.Today && !item.IsReviewed)

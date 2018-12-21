@@ -26,6 +26,9 @@
                 @Html.ActionLink("Data", "Index", new { sortOrder = ViewBag.DateSortParm })
             </th>
             <th>
+                Godzina
+            </th>
+            <th>
                 @Html.ActionLink("Pacjent", "Index", new { sortOrder = ViewBag.NameSortParm })
             </th>
             <th>Anulowanie</th>
@@ -34,25 +37,28 @@
     <tbody>
         @foreach (var item in Model)
         {
-            <tr>
-                <td>
-                    @Html.DisplayFor(modelItem => item.Date)
-                </td>
-                <td>
-                    @Html.DisplayFor(modelItem => item.Patient.FirstName)
-                    @Html.DisplayFor(modelItem => item.Patient.LastName)
-                </td>
-                <td>
-                    @if (item.Date < DateTime.Today)
-                    {
-                        <a asp-action="Delete" asp-route-id="@item.Id" class="btn btn-sm btn-default disabled">Anuluj</a>
-                    }
-                    else
-                    {
-                        <a asp-action="Delete" asp-route-id="@item.Id" class="btn btn-sm btn-danger">Anuluj</a>
-                    }
-                </td>
-            </tr>
+        <tr>
+            <td>
+                @Html.DisplayFor(modelItem => item.Date)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.Date.TimeOfDay)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.Patient.FirstName)
+                @Html.DisplayFor(modelItem => item.Patient.LastName)
+            </td>
+            <td>
+                @if (item.Date < DateTime.Today)
+                {
+                    <a asp-action="Delete" asp-route-id="@item.Id" class="btn btn-sm btn-default disabled">Anuluj</a>
+                }
+                else
+                {
+                    <a asp-action="Delete" asp-route-id="@item.Id" class="btn btn-sm btn-danger">Anuluj</a>
+                }
+            </td>
+        </tr>
         }
     </tbody>
 </table>

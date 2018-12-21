@@ -1,0 +1,16 @@
+﻿@model ResMed.Models.Doctors
+
+<div class="form-group">
+    @foreach (var item in Model.WorkHours)
+    {
+        if (Model.TakenHoursInDay.Contains(item))
+        {
+            <button class="btn btn-danger" disabled>@item</button>
+        }
+        else
+        {
+            <button type="button" onclick="fillInTime(this.textContent)" class="btn btn-success">@item</button>//po kliknięciu odpala sie javascript wypełniający godzinę
+        }
+    }
+</div>
+

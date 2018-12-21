@@ -4,6 +4,7 @@ using System.Linq;
 using System.Threading.Tasks;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Identity;
+using Microsoft.AspNetCore.Identity.UI.Services;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using ResMed.Data;
@@ -19,14 +20,16 @@ namespace ResMed.Areas.Patient.Controllers
 
         private readonly ApplicationDbContext _db;
         private readonly UserManager<IdentityUser> _userManager;
+        private readonly IEmailSender _emailSender;
 
         [BindProperty]
         public Visits Visit { get; set; }
 
-        public MyPatientsController(ApplicationDbContext db, UserManager<IdentityUser> userManager)
+        public MyPatientsController(ApplicationDbContext db, UserManager<IdentityUser> userManager, IEmailSender emailSender)
         {
             _db = db;
             _userManager = userManager;
+            _emailSender = emailSender;
         }
 
 
@@ -38,7 +41,7 @@ namespace ResMed.Areas.Patient.Controllers
 
             var user = await _userManager.GetUserAsync(User);
 
-            var doctor = GetActualLoggedDoctorFromDb(user);
+            var doctor = GetActualLoggedDoctorUserFromDb(user);
 
             IQueryable<Visits> visits = (from v in _db.Visits.Include(p => p.Patient)
                                          where v.DoctorId == doctor.Id
@@ -96,20 +99,40 @@ namespace ResMed.Areas.Patient.Controllers
         //POST - Anulowanie wizyty
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<ActionResult> Delete(int id)
+        public async Task<ActionResult> Delete(int id, string reason)
         {
             var visit = await _db.Visits.FindAsync(id);
+
+
+            var doc = GetActualLoggedDoctorFromDb(visit.DoctorId);
+
+            var user = GetPatientUserFromDb(visit.PatientId);
+            string patientMail = user.Email;
+
+            await _emailSender.SendEmailAsync(patientMail, $"Anulowanie wizyty dnia: {visit.Date.ToShortDateString()}",
+                        $"Lekarz {doc.FirstName + " " + doc.LastName} anulował wizytę o godzinie: {visit.Date.TimeOfDay} \n" +
+                        $"Powód: {reason}");
 
             _db.Visits.Remove(visit);
             await _db.SaveChangesAsync();
             return RedirectToAction(nameof(Index));
         }
 
-        private Doctors GetActualLoggedDoctorFromDb(IdentityUser user)
-        {
-            return _db.Doctors.FirstOrDefault(x => x.UserId == user.Id);
+        private Doctors GetActualLoggedDoctorFromDb(int doctorId)
+        { 
+            return _db.Doctors.Find(doctorId);
         }
 
+        private Doctors GetActualLoggedDoctorUserFromDb(IdentityUser user)
+        {
+            return _db.Doctors.FirstOrDefault(d => d.UserId == user.Id);
+        }
+
+        private IdentityUser GetPatientUserFromDb(int patientId)
+        {
+            var pat = _db.Patients.Find(patientId);
+            return _db.Users.Find(pat.UserId);
+        }
 
     }
 }
