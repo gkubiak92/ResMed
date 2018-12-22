@@ -16,7 +16,7 @@ namespace ResMed.Models
 
         [Required]
         [Display(Name = "Ocena")]
-        [Range(1,5, ErrorMessage = "Ocena musi być w przedziale od 1 do 5")]
+        [Range(0,5, ErrorMessage = "Ocena musi być w przedziale od 1 do 5")]
         public int Rating { get; set; }
 
         [ForeignKey("Doctor")]

@@ -145,18 +145,22 @@ namespace ResMed.Areas.Patient.Controllers
 
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<ActionResult> Review(int id)
+        public async Task<ActionResult> Review(int id, VisitsViewModel visitsViewModel)
         {
-
             if (!ModelState.IsValid)
             {
                 return View(VisitVM);
             }
 
             var review = VisitVM.Review;
+            if (review.Rating == 0)
+            {
+                return View(VisitVM);
+            }
 
             var vis = _db.Visits.Find(id);
             vis.IsReviewed = true;
+
 
             _db.Visits.Update(vis);
             _db.Reviews.Add(review);

@@ -37,11 +37,14 @@
                 <span asp-validation-for="Review.Text" class="text-danger"></span>
             </div>
             <div class="form-group" hidden>
+                <input asp-for="Visit.Id" class="form-control" />
+            </div>
+            <div class="form-group" hidden>
                 <input asp-for="Review.DoctorId" class="form-control" asp-items="ViewBag.DoctorId">
                 <input asp-for="Review.PatientId" class="form-control" asp-items="ViewBag.PatientId">
             </div>
             <div class="form-group">
-                <input type="submit" value="Oceń" class="btn btn-success" id="@Model.Visit.Id" doctorId="@Model.Doctor.Id"/> @*przekazuję tutaj dodatkowo id wizyty aby ominąć problem z kluczem obcym*@
+                <input type="submit" value="Oceń" class="btn btn-success"/> @*przekazuję tutaj dodatkowo id wizyty aby ominąć problem z kluczem obcym*@
                 <a asp-action="Index" class="btn btn-danger">Powrót</a>
             </div>
 
