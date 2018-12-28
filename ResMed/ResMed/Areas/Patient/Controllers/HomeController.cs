@@ -65,6 +65,7 @@ namespace ResMed.Controllers
             if (!string.IsNullOrEmpty(id) && !string.IsNullOrEmpty(spec))
             {
                 var doctorPlaceSpecList = await _db.Doctors.Include(m => m.Specializations)
+                                                    .Where(m => m.IsActive == true)
                                                     .Where(m => m.Address.Contains(id))
                                                     .Where(s => s.Specializations.Name == spec)
                                                     .ToListAsync();
@@ -74,6 +75,7 @@ namespace ResMed.Controllers
             if (string.IsNullOrEmpty(id) && !string.IsNullOrEmpty(spec))
             {
                 var doctorSpecOnlyList = await _db.Doctors.Include(m => m.Specializations)
+                                                    .Where(m => m.IsActive == true)
                                                     .Where(s => s.Specializations.Name == spec)
                                                     .ToListAsync();
                 return View(doctorSpecOnlyList.OrderBy(m => m.FirstName));
@@ -82,6 +84,7 @@ namespace ResMed.Controllers
             if (!string.IsNullOrEmpty(id) && string.IsNullOrEmpty(spec))
             {
                 var doctorPlaceOnlyList = await _db.Doctors.Include(m => m.Specializations)
+                                                    .Where(m => m.IsActive == true)
                                                     .Where(m => m.Address.Contains(id))
                                                     .ToListAsync();
                 return View(doctorPlaceOnlyList.OrderBy(m => m.FirstName));
@@ -89,6 +92,7 @@ namespace ResMed.Controllers
 
 
             var doctorList = await _db.Doctors.Include(m => m.Specializations)
+                                                    .Where(m => m.IsActive == true)
                                                     .ToListAsync();
             return View(doctorList.OrderBy(m => m.FirstName));
         }

@@ -50,6 +50,7 @@ namespace ResMed.Areas.Identity.Pages.Account.Manage
 
         public class InputModel
         {
+            public bool IsActive { get; set; }
 
             [Display(Name = "Płeć")]
             public string Gender { get; set; }
@@ -71,6 +72,7 @@ namespace ResMed.Areas.Identity.Pages.Account.Manage
             //Pola dodatkowe Input dla Doktora
             [Required(ErrorMessage = "Pole wymagane")]
             [Display(Name = "Nr licencji")]
+            [Range(0, int.MaxValue, ErrorMessage = "Nr PWZ może zawierać tylko cyfry")]
             public string LicenseNr { get; set; }
 
             [Display(Name = "Opis")]
@@ -148,6 +150,7 @@ namespace ResMed.Areas.Identity.Pages.Account.Manage
 
             Input = new InputModel
             {
+                IsActive = doctor.IsActive,
                 Gender = doctor.Gender,
                 Image = doctor.Image,
                 FirstName = doctor.FirstName,
@@ -215,9 +218,43 @@ namespace ResMed.Areas.Identity.Pages.Account.Manage
 
             if (Input.LicenseNr != doctor.LicenseNr)
             {
-                doctor.LicenseNr = Input.LicenseNr;
-                _db.Doctors.Update(doctor);
-                await _db.SaveChangesAsync();
+                int[] digits = Input.LicenseNr.ToString().ToCharArray().Select(x => (int)Char.GetNumericValue(x)).ToArray(); //przekształcenie wpisanego nr PWZ na tablicę intów
+
+                if (Input.LicenseNr.Length != 7)
+                {
+                    StatusMessage = "Błąd. Numer prawa wykonywania zawodu musi posiadać 7 cyfr.";
+                    return RedirectToPage();
+                }
+                else if (digits[0] == 0)
+                {
+                    StatusMessage = ("Błąd. Numer prawa wykonywania zawodu nie może zaczynać się od cyfry 0.");
+                    return RedirectToPage();
+                }
+                else
+                {
+                    int j = 1;
+                    int sum = 0;
+                    for (int i = 1; i < 7; i++)
+                    {
+                        sum = sum + (digits[i] * j);
+                        j = j + 1;
+                    }
+                    int mod = sum % 11;
+
+                    if (mod != digits[0])
+                    {
+                        StatusMessage = ("Błąd. Nieprawidłowa cyfra kontrolna. Numer prawa wykonywania zawodu jest niepoprawny.");
+                    }
+
+                    else
+                    {
+                        StatusMessage = ("Pomyślnie ustawiono numer prawa wykonywania zawodu.");
+                        doctor.LicenseNr = Input.LicenseNr;
+                        doctor.IsActive = true;
+                        _db.Doctors.Update(doctor);
+                        await _db.SaveChangesAsync();
+                    }
+                }
             }
 
             if (Input.Description != doctor.Description)
