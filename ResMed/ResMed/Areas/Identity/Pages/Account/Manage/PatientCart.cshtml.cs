@@ -54,7 +54,9 @@ namespace ResMed.Areas.Identity.Pages.Account.Manage
             public string LastName { get; set; }
 
             [Phone]
-            [Display(Name = "Nr telefonu")]
+            [Display(Name = "Nr telefonu (9 cyfr bez +48)")]
+            [Range(0, int.MaxValue, ErrorMessage = "Nr telefonu może zawierać tylko cyfry")]
+            [StringLength(9, ErrorMessage = "Nr tel musi składać się z 9 cyfr")]
             public string PhoneNumber { get; set; }
 
             [Required]

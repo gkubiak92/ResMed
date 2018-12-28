@@ -63,7 +63,9 @@ namespace ResMed.Areas.Identity.Pages.Account.Manage
             public string LastName { get; set; }
 
             [Phone]
-            [Display(Name = "Nr telefonu")]
+            [Display(Name = "Nr telefonu (9 cyfr bez +48)")]
+            [Range(0, int.MaxValue, ErrorMessage = "Nr telefonu może zawierać tylko cyfry")]
+            [StringLength(9, ErrorMessage = "Nr tel musi składać się z 9 cyfr")]
             public string PhoneNumber { get; set; }
 
             public string Image { get; set; }
@@ -83,6 +85,9 @@ namespace ResMed.Areas.Identity.Pages.Account.Manage
 
             [Display(Name = "Adres")]
             public string Address { get; set; }
+
+            [Display(Name = "Nazwa gabinetu")]
+            public string OfficeName { get; set; }
 
             [Display(Name = "Średni czas wizyty [min]")]
             [Range(0, 360, ErrorMessage = "Wprowadź właściwą liczbę")]
@@ -160,6 +165,7 @@ namespace ResMed.Areas.Identity.Pages.Account.Manage
                 Description = doctor.Description,
                 SpecializationId = doctor.SpecializationId,
                 Address = doctor.Address,
+                OfficeName = doctor.OfficeName,
                 AverageVisitTime = doctor.AverageVisitTime,
                 StartWorkHours = doctor.StartWorkHours,
                 EndWorkHours = doctor.EndWorkHours,
@@ -180,7 +186,7 @@ namespace ResMed.Areas.Identity.Pages.Account.Manage
         {
             if (!ModelState.IsValid)
             {
-                return Page();
+                return RedirectToPage();
             }
 
             var user = await _userManager.GetUserAsync(User);
@@ -273,6 +279,12 @@ namespace ResMed.Areas.Identity.Pages.Account.Manage
             if (Input.Address != doctor.Address)
             {
                 doctor.Address = Input.Address;
+                _db.Doctors.Update(doctor);
+                await _db.SaveChangesAsync();
+            }
+            if (Input.OfficeName != doctor.OfficeName)
+            {
+                doctor.OfficeName = Input.OfficeName;
                 _db.Doctors.Update(doctor);
                 await _db.SaveChangesAsync();
             }
