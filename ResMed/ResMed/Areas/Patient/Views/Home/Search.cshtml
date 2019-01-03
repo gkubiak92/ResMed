@@ -6,23 +6,24 @@
 }
 
 <head>
-    
+
 </head>
 
 <h2>Lista lekarzy</h2>
 
 <div class="row">
     <div class="col-md-12">
-        @if(Model.Count() == 0 || Model == null)
+        @if (Model.Count() == 0 || Model == null)
         {
-            <h1>Nie znaleziono żadnego lekarza</h1>
+            <h1>Nie znaleziono żadnego lekarza w tej lokalizacji</h1>
         }
 
         @foreach (var item in Model)
         {
-            <div class="col-md-3">
+            <div class="col-md-3 own-border-box card-body">
+
                 <p>
-                    <img src="@item.Image" style="height:250px; box-shadow: 3px 3px 1px #ccc;" />
+                    <img src="@item.Image" style="object-fit: cover; width: 180px; height: 240px; padding:10px;"/>
                     <h3>
                         @Html.DisplayFor(modelItem => item.FirstName)
                         @Html.DisplayFor(modelItem => item.LastName)
@@ -31,11 +32,12 @@
                     @Html.DisplayFor(modelItem => item.Specializations.Name)
                     <br>
                 </p>
+
                 @Html.DisplayFor(modelItem => item.Address)
                 <br>
-                <a asp-action="BookDoc" asp-route-id="@item.Id" class="btn btn-primary">
-                Umów wizytę</a>
-                <br /><br /><br />
+                <a asp-action="BookDoc" asp-route-id="@item.Id" class="btn btn-info buttonik">Umów wizytę</a>
+                <br />
+
             </div>
         }
     </div>

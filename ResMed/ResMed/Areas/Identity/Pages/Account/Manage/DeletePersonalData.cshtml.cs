@@ -30,6 +30,7 @@ namespace ResMed.Areas.Identity.Pages.Account.Manage
         public class InputModel
         {
             [Required]
+            [Display(Name = "Hasło")]
             [DataType(DataType.Password)]
             public string Password { get; set; }
         }
@@ -61,7 +62,7 @@ namespace ResMed.Areas.Identity.Pages.Account.Manage
             {
                 if (!await _userManager.CheckPasswordAsync(user, Input.Password))
                 {
-                    ModelState.AddModelError(string.Empty, "Password not correct.");
+                    ModelState.AddModelError(string.Empty, "Hasło nieprawidłowe.");
                     return Page();
                 }
             }

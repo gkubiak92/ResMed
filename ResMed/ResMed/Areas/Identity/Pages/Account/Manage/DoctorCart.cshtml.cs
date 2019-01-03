@@ -72,7 +72,7 @@ namespace ResMed.Areas.Identity.Pages.Account.Manage
 
 
             //Pola dodatkowe Input dla Doktora
-            [Required(ErrorMessage = "Pole wymagane")]
+            //[Required(ErrorMessage = "Pole wymagane")]
             [Display(Name = "Nr licencji")]
             [Range(0, int.MaxValue, ErrorMessage = "Nr PWZ może zawierać tylko cyfry")]
             public string LicenseNr { get; set; }

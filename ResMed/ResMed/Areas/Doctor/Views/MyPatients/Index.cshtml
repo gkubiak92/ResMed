@@ -5,15 +5,14 @@
     Layout = "~/Views/Shared/_Layout.cshtml";
 }
 
-<h2>Moje wizyty</h2>
-
-<div class="col-md-3">
+<div class="col-md-4">
+    <h2>Moje wizyty</h2>
     @using (Html.BeginForm(new { @class = "form-group" }))
     {
         <p>
             Znajdź po imieniu:
-            @Html.TextBox("patientSearch", null, null, new { @class = "form-control"})
-            <input type="submit" value="Szukaj" class="btn btn-sm btn-default" />
+            @Html.TextBox("patientSearch", null, null, new { @class = "form-control" })
+            <input type="submit" value="Szukaj" class="btn btn-sm btn-info" />
         </p>
 
     }
@@ -62,3 +61,4 @@
         }
     </tbody>
 </table>
+

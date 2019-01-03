@@ -13,12 +13,12 @@
         <p>
             <strong>Usunięcie tych danych permanentnie usunie Twoje konto. Ta czynność nie może być cofnięta.</strong>
         </p>
-        <form asp-page="DownloadPersonalData" method="post" class="form-group">
-            <button class="btn btn-default" type="submit">Pobierz</button>
-        </form>
-        <p>
-            <a asp-page="DeletePersonalData" class="btn btn-default">Usuń</a>
-        </p>
+        <div class="pull-right">
+            <form asp-page="DownloadPersonalData" method="post" class="form-group">
+                <button class="btn btn-info" type="submit">Pobierz</button>
+                <a asp-page="DeletePersonalData" class="btn btn-danger">Usuń</a>
+            </form>
+        </div>
     </div>
 </div>
 

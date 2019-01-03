@@ -19,7 +19,11 @@ namespace WebPWrecover.Services
 
         public Task SendEmailAsync(string email, string subject, string message)
         {
-            return Execute(Options.SendGridKey, subject, message, email);
+
+            //Options.SendGridKey < to w pierwszym parametrze Execute dla localhost
+
+            var apiKey = System.Environment.GetEnvironmentVariable("SENDGRID_APIKEY");
+            return Execute(apiKey, subject, message, email);
         }
 
         public Task Execute(string apiKey, string subject, string message, string email)

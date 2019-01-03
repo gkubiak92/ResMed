@@ -34,128 +34,141 @@
                      new SelectListItem{Text="Kobieta", Value="Kobieta"}}, "Wybierz płeć", new { @class = "form-control" })
                 <span asp-validation-for="Input.FirstName" class="text-danger"></span>
             </div>
-            <div class="form-group">
-                <label asp-for="Input.FirstName"></label>
-                <input asp-for="Input.FirstName" class="form-control" />
-                <span asp-validation-for="Input.FirstName" class="text-danger"></span>
-            </div>
-            <div class="form-group">
-                <label asp-for="Input.LastName"></label>
-                <input asp-for="Input.LastName" class="form-control" />
-                <span asp-validation-for="Input.LastName" class="text-danger"></span>
-            </div>
-            <div class="form-group">
-                <label asp-for="Input.OfficeName"></label>
-                <input asp-for="Input.OfficeName" class="form-control" />
-                <span asp-validation-for="Input.OfficeName" class="text-danger"></span>
-            </div>
-            <div class="form-group">
-                <label asp-for="Input.PhoneNumber"></label>
-                <input asp-for="Input.PhoneNumber" class="form-control" />
-                <span asp-validation-for="Input.PhoneNumber" class="text-danger"></span>
-            </div>
-            <div class="form-group">
-                <label asp-for="Input.SpecializationId"></label>
-                @{var specList = ViewData["SpecsList"] as List<SelectListItem>;} @*pobranie listy specjalizacji z ViewData i przypisanie do listy typu SelectListItem*@
-                <select asp-for="Input.SpecializationId" class="form-control" asp-items="@(new SelectList(specList, "Value", "Text"))"></select>
-            </div>
 
-            <div class="form-group">
-                <label asp-for="Input.Address"></label>
-                <input asp-for="Input.Address" id="pac-input" type="text" class="form-control" />
-                <span asp-validation-for="Input.Address" class="text-danger"></span>
-            </div>
-            <div class="form-group">
-                <label asp-for="Input.LicenseNr"></label>
-                <input asp-for="Input.LicenseNr" class="form-control" />
-                <span asp-validation-for="Input.LicenseNr" class="text-danger"></span>
-            </div>
-
-            <div class="form-group">
-                <label asp-for="Input.AverageVisitTime"></label>
-                <input asp-for="Input.AverageVisitTime" type="number" step="15" class="form-control" />
-                <span asp-validation-for="Input.AverageVisitTime" class="text-danger"></span>
-            </div>
-
-            <div class="form-group">
-                <label asp-for="Input.StartWorkHours"></label>
-                <input asp-for="Input.StartWorkHours" type="time" class="timepicker form-control" />
-                <span asp-validation-for="Input.StartWorkHours" class="text-danger"></span>
-            </div>
-
-            <div class="form-group">
-                <label asp-for="Input.EndWorkHours"></label>
-                <input asp-for="Input.EndWorkHours" type="time" class="timepicker form-control" />
-                <span asp-validation-for="Input.EndWorkHours" class="text-danger"></span>
-            </div>
-
-            <div class="form-group">
-                <div class="form-group text-center">
-                    <label>Dni pracujące</label>
+            <div class="row">
+                <div class="col-sm-6">
+                    <div class="form-group">
+                        <label asp-for="Input.FirstName"></label>
+                        <input asp-for="Input.FirstName" class="form-control" />
+                        <span asp-validation-for="Input.FirstName" class="text-danger"></span>
+                    </div>
                 </div>
-                <table class="table table-striped">
-                    <tr align="center">
-                        <th>Pn.</th>
-                        <th>Wt.</th>
-                        <th>Śr.</th>
-                        <th>Czw.</th>
-                        <th>Pt.</th>
-                        <th>Sb.</th>
-                        <th>Nd.</th>
-                    </tr>
-                    <tr align="center">
-                        <td>
-                            <input asp-for="Input.WorkingMonday" type="checkbox" />
-                        </td>
-                        <td>
-                            <input asp-for="Input.WorkingTuesday" type="checkbox" />
-                        </td>
-                        <td>
-                            <input asp-for="Input.WorkingWednesday" type="checkbox" />
-                        </td>
-                        <td>
-                            <input asp-for="Input.WorkingThursday" type="checkbox" />
-                        </td>
-                        <td>
-                            <input asp-for="Input.WorkingFriday" type="checkbox" />
-                        </td>
-                        <td>
-                            <input asp-for="Input.WorkingSaturday" type="checkbox" />
-                        </td>
-                        <td>
-                            <input asp-for="Input.WorkingSunday" type="checkbox" />
-                        </td>
-                    </tr>
-                </table>
+                <div class="col-sm-6">
+                    <div class="form-group">
+                        <label asp-for="Input.LastName"></label>
+                        <input asp-for="Input.LastName" class="form-control" />
+                        <span asp-validation-for="Input.LastName" class="text-danger"></span>
+                    </div>
+                </div>
             </div>
+                    <div class="form-group">
+                        <label asp-for="Input.OfficeName"></label>
+                        <input asp-for="Input.OfficeName" class="form-control" />
+                        <span asp-validation-for="Input.OfficeName" class="text-danger"></span>
+                    </div>
+                    <div class="form-group">
+                        <label asp-for="Input.PhoneNumber"></label>
+                        <input asp-for="Input.PhoneNumber" class="form-control" />
+                        <span asp-validation-for="Input.PhoneNumber" class="text-danger"></span>
+                    </div>
+                    <div class="form-group">
+                        <label asp-for="Input.SpecializationId"></label>
+                        @{var specList = ViewData["SpecsList"] as List<SelectListItem>;} @*pobranie listy specjalizacji z ViewData i przypisanie do listy typu SelectListItem*@
+                        <select asp-for="Input.SpecializationId" class="form-control" asp-items="@(new SelectList(specList, "Value", "Text"))"></select>
+                    </div>
 
-            <div class="form-group">
-                <label asp-for="Input.Description"></label>
-                <textarea style="height:180px; resize:none" asp-for="Input.Description" class="form-control"></textarea>
-                <span asp-validation-for="Input.Description" class="text-danger"></span>
-            </div>
+                    <div class="form-group">
+                        <label asp-for="Input.Address"></label>
+                        <input asp-for="Input.Address" id="pac-input" type="text" class="form-control" />
+                        <span asp-validation-for="Input.Address" class="text-danger"></span>
+                    </div>
+                    <div class="form-group">
+                        <label asp-for="Input.LicenseNr"></label>
+                        <input asp-for="Input.LicenseNr" class="form-control" />
+                        <span asp-validation-for="Input.LicenseNr" class="text-danger"></span>
+                    </div>
 
-            @*Google Places Api*@
+                    <div class="form-group">
+                        <label asp-for="Input.AverageVisitTime"></label>
+                        <input asp-for="Input.AverageVisitTime" type="number" step="15" class="form-control" />
+                        <span asp-validation-for="Input.AverageVisitTime" class="text-danger"></span>
+                    </div>
 
-            <div id="infowindow-content">
-                <img src="" width="16" height="16" id="place-icon">
-                <span id="place-name" class="title"></span><br>
-                <span id="place-address"></span>
-            </div>
-            @*_________________*@
+                    <div class="row">
+                        <div class="col-sm-6">
+                            <div class="form-group">
+                                <label asp-for="Input.StartWorkHours"></label>
+                                <input asp-for="Input.StartWorkHours" type="time" class="timepicker form-control" />
+                                <span asp-validation-for="Input.StartWorkHours" class="text-danger"></span>
+                            </div>
+                        </div>
+
+                        <div class="col-sm-6">
+                            <div class="form-group">
+                                <label asp-for="Input.EndWorkHours"></label>
+                                <input asp-for="Input.EndWorkHours" type="time" class="timepicker form-control" />
+                                <span asp-validation-for="Input.EndWorkHours" class="text-danger"></span>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="form-group">
+                        <div class="form-group text-center">
+                            <label>Dni pracujące</label>
+                        </div>
+                        <table class="table table-striped">
+                            <tr align="center">
+                                <th>Pn.</th>
+                                <th>Wt.</th>
+                                <th>Śr.</th>
+                                <th>Czw.</th>
+                                <th>Pt.</th>
+                                <th>Sb.</th>
+                                <th>Nd.</th>
+                            </tr>
+                            <tr align="center">
+                                <td>
+                                    <input asp-for="Input.WorkingMonday" type="checkbox" />
+                                </td>
+                                <td>
+                                    <input asp-for="Input.WorkingTuesday" type="checkbox" />
+                                </td>
+                                <td>
+                                    <input asp-for="Input.WorkingWednesday" type="checkbox" />
+                                </td>
+                                <td>
+                                    <input asp-for="Input.WorkingThursday" type="checkbox" />
+                                </td>
+                                <td>
+                                    <input asp-for="Input.WorkingFriday" type="checkbox" />
+                                </td>
+                                <td>
+                                    <input asp-for="Input.WorkingSaturday" type="checkbox" />
+                                </td>
+                                <td>
+                                    <input asp-for="Input.WorkingSunday" type="checkbox" />
+                                </td>
+                            </tr>
+                        </table>
+                    </div>
+
+                    <div class="form-group">
+                        <label asp-for="Input.Description"></label>
+                        <textarea style="height:180px; resize:none" asp-for="Input.Description" class="form-control"></textarea>
+                        <span asp-validation-for="Input.Description" class="text-danger"></span>
+                    </div>
+
+                    @*Google Places Api*@
+
+                    <div id="infowindow-content">
+                        <img src="" width="16" height="16" id="place-icon">
+                        <span id="place-name" class="title"></span><br>
+                        <span id="place-address"></span>
+                    </div>
+                    @*_________________*@
 
 
-            <button type="submit" class="btn btn-default">Zapisz</button>
-        </div>
+                    <button type="submit" class="btn btn-info pull-right">Zapisz</button>
+                </div>
 
-        <div class="col-md-6">
-            @*<img src="~/images/DoctorCart/doctor-blank-profile.png" />*@
-            <img src="@Model.Input.Image" width="100%" style="border-radius:5px; border:1px solid #bbb9b9;" />
-            <input type="file" name="files" class="form-control" />
-            <br /><br />
-            <div id="map"></div> @*mapa pod zdj profilowym*@
-        </div>
-    </form>
+                <div class="col-md-6">
+                    @*<img src="~/images/DoctorCart/doctor-blank-profile.png" />*@
+                    <img src="@Model.Input.Image" width="100%" style="border-radius:5px; border:1px solid #bbb9b9;" />
+                    <input type="file" name="files" class="form-control" />
+                    <br /><br />
+                    <div id="map"></div> @*mapa pod zdj profilowym*@
+                </div>
+</form>
 
 
 
