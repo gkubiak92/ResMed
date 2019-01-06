@@ -1,6 +1,7 @@
 ﻿@model ResMed.Models.Doctors
-
 <div class="form-group">
+
+
     @foreach (var item in Model.WorkHours)
     {
         if (Model.TakenHoursInDay.Contains(item))
@@ -13,4 +14,3 @@
         }
     }
 </div>
-

@@ -1741,7 +1741,7 @@ a.text-warning:focus {
 }
 
 .text-danger {
-    font-size: 1.2rem;
+    font-size: 1.5rem;
     color: #ffffff;
 }
 
@@ -8518,13 +8518,17 @@ a.list-group-item-danger.active {
     position: relative;
 }
 
+tbody tr:nth-child(odd) {
+    background: #f1f1f1;
+}
+
 .own-border-box {
     border-radius: 5px;
     border: 1px solid #bbb9b9;
-    min-height: 470px;
-    max-height: 470px;
+    max-height: 465px;
     max-width: 275px;
     margin: 5px;
+    background: #f1f1f1;
 }
 
 .card-body {
@@ -8536,6 +8540,22 @@ a.list-group-item-danger.active {
     margin-top: auto;
 }
 
-tbody tr:nth-child(odd) {
-    background: #f1f1f1obra;
+.own-border-box-small {
+    width: 100%;
+    height: 280px;
+    overflow: hidden;
+    position: relative;
+    margin: auto;
+    margin-top: 15px;
+    border-radius: 5px;
+    border: 1px;
 }
+
+    .own-border-box-small img {
+        width: 280px;
+        height: 280px;
+        object-fit: cover;
+        object-position: top;
+        display: block;
+        margin: auto;
+    }

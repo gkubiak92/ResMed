@@ -103,16 +103,15 @@ namespace ResMed.Controllers
         {
             var model = await _db.Doctors.Include(m => m.Specializations).Where(m => m.Id == id).FirstOrDefaultAsync();
 
+
             //model.SelectedDate = DateTime.Parse(Date);
             model.SelectedDate = DateTime.ParseExact(Date, "dd-MM-yyyy", null); //parsowanie z konkretnego formatu, bez określenia formatu były problemy na innych stacjach roboczych
+            
 
-
-            var takenHoursList = (from v in _db.Visits
+            var takenHoursList = await (from v in _db.Visits
                                   where (v.DoctorId == model.Id
-                                  && v.Date.Day == model.SelectedDate.Day
-                                  && v.Date.Month == model.SelectedDate.Month
-                                  && v.Date.Year == model.SelectedDate.Year)
-                                  select v.Date.TimeOfDay.ToString(@"hh\:mm")).ToList();
+                                  && v.Date.Date == model.SelectedDate.Date)
+                                  select v.Date.TimeOfDay.ToString(@"hh\:mm")).ToListAsync();
 
             model.TakenHoursInDay = takenHoursList;
 
@@ -234,6 +233,8 @@ namespace ResMed.Controllers
 
             var patient = GetActualLoggedPatientFromDb(user);
 
+
+
             VisitVM.Visit.Date = VisitVM.Visit.Date
                                                 .AddHours(VisitVM.Visit.Time.Hour)
                                                 .AddMinutes(VisitVM.Visit.Time.Minute);
@@ -246,6 +247,7 @@ namespace ResMed.Controllers
                                 where (v.DoctorId == vis.DoctorId
                                 && v.Date == vis.Date)
                                 select v);
+
             var doc = _db.Doctors.Find(id);
             var docUser = GetDoctorUserFromDb(id); //pobiera dane konta USERA dla lekarza o danym id
 

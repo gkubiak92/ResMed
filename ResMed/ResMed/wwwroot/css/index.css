@@ -29,6 +29,7 @@
             height: 50px;
         }
 
+
 #search .spec-field {
     padding-right: 2px;
 }
@@ -39,10 +40,6 @@
 
 #search .button-field {
     padding-left: 2px;
-}
-
-#main-content {
-    visibility: hidden;
 }
 
 #footer {

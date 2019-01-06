@@ -15,6 +15,8 @@ using Microsoft.Extensions.DependencyInjection;
 using Microsoft.AspNetCore.Identity.UI.Services;
 using WebPWrecover.Services;
 using ResMed.Areas.Identity.Services;
+using Microsoft.AspNetCore.Localization;
+using System.Globalization;
 
 namespace ResMed
 {
@@ -74,6 +76,26 @@ namespace ResMed
                 app.UseExceptionHandler("/Home/Error");
                 app.UseHsts();
             }
+
+
+            // Configure the Localization middleware
+
+            var defaultDateCulture = "pl-PL";
+            var ci = new CultureInfo(defaultDateCulture);
+            ci.DateTimeFormat.ShortDatePattern = "dd-MM-yyyy";
+            ci.DateTimeFormat.DateSeparator = "-";
+            ci.NumberFormat.NumberDecimalSeparator = ".";
+            ci.NumberFormat.CurrencyDecimalSeparator = ".";
+
+            app.UseRequestLocalization(new RequestLocalizationOptions
+            {
+                DefaultRequestCulture = new RequestCulture(ci),
+                SupportedCultures = new List<CultureInfo>
+                { ci,},
+                SupportedUICultures = new List<CultureInfo>{ci,}
+            });
+            //////////////////
+            ///
 
             app.UseHttpsRedirection();
             app.UseStaticFiles();
