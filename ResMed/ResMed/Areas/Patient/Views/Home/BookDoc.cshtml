@@ -1,21 +1,18 @@
 ﻿@model ResMed.Models.ViewModel.VisitsViewModel
 
-
 @{
     ViewData["Title"] = "Zarezerwuj lekarza";
     Layout = "~/Views/Shared/_Layout.cshtml";
 }
-
 <head>
     <link rel="stylesheet" type="text/css" href="~/css/GoogleMapsAPI.css" />
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
     <script src="~/js/FillInTime.js"></script> @*skrypt do ustawiania godziny wizyty w odpowiednim polu input*@
     <link rel="stylesheet" href="~/css/StarsRating.css" />
-
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
     <style>
         .checked {
-            color: orange;
+            color: rgb(32, 201, 151);
         }
 
         #reviewCart {
@@ -26,14 +23,13 @@
     </style>
 </head>
 
-
 <br />
-<h2>@ViewData["Title"]</h2>
-
+<div class="mainTitle">
+    <h2>@ViewData["Title"]</h2>
+</div>
 <form method="post">
     <div class="row">
         <div class="form-group">
-
             @if (TempData["Error"] != null)
             {
                 if (TempData["Error"].ToString() == "Error")
@@ -46,93 +42,93 @@
             }
         </div>
     </div>
-
     <div class="row">
         <div class="col-md-4">
             <div class="form-group">
                 <h2></h2>
                 <img src="@Model.Doctor.Image" style="height: 350px;" />
-
                 <h2>
+                    <i class="fa fa-user-md"></i>
                     @Html.DisplayFor(model => model.Doctor.FirstName)
                     @Html.DisplayFor(model => model.Doctor.LastName)
                 </h2>
-                <h4>@Html.DisplayFor(model => model.Doctor.Specializations.Name)</h4>
-
+                <h4>
+                    <i class="fa fa-stethoscope" aria-hidden="true"></i>
+                    @Html.DisplayFor(model => model.Doctor.Specializations.Name)
+                </h4>
                 @for (int i = 0; i < Model.Doctor.AverageRating; i++)
                 {
                     <span class="fa fa-star checked"></span>
                 }
-
+                @for (int i = (int)Model.Doctor.AverageRating; i < 5; i++)
+                {
+                    <span class="fa fa-star"></span>
+                }
             </div>
 
-
         </div>
-
         <div class="col-md-4">
-            <h2>Umów wizytę</h2>
+            <h2>
+                <i class="fa fa-calendar"></i> Umów wizytę
+            </h2>
             <div class="form-group">
-
                 <label asp-for="@Model.Visit.Date"></label>
                 <input asp-for="@Model.Visit.Date" type="text" id="datepicker" placeholder="wybierz datę" class="form-control" autocomplete="off" required />
-
                 @*<div id="datepicker"></div>*@
                 <label asp-for="@Model.Visit.Time"></label>
-                <input asp-for="@Model.Visit.Time" type="time" id="VisitTime" class="form-control time" readonly required/>
+                <input asp-for="@Model.Visit.Time" type="time" id="VisitTime" class="form-control time" readonly required />
                 <br />
-                <div id="calendarRender">
+                <div id="calendarRender" style="padding: 5px 5px 5px 5px;">
                     @*Div z widokiem partialview generującym wolne godziny*@
                 </div>
             </div>
-            <div class="pull-right">
+            <div class="text-right">
                 <input type="submit" value="Zarezerwuj" class="btn btn-info" asp-route-id="@Model.Doctor.Id" />
                 <a asp-action="Index" class="btn btn-danger">Powrót</a>
             </div>
         </div>
-
         <div class="col-md-4">
-
             <div class="form-group">
-                <h2>Jak dojechać</h2>
-
+                <h2>
+                    <i class="fa fa-map-marker"></i>Jak dojechać
+                </h2>
                 <p>@Model.Doctor.Address</p>
-
                 <input type="hidden" asp-for="@Model.Doctor.Address" id="pac-input" />
-
                 @*Google Places Api*@
-
                 <div id="infowindow-content">
                     <img src="" width="14" height="14" id="place-icon">
                     <span id="place-name" class="title"></span><br>
                     <span id="place-address"></span>
                 </div>
                 @*_________________*@
-
                 <br /><br />
                 <div id="map"></div> @*mapa pod zdj profilowym*@
-
                 <script src="~/js/GoogleMapsAPI.js"></script>
                 <script src="https://maps.googleapis.com/maps/api/js?key=AIzaSyDsCfRtCAXWGgSvMo7uEv8XqfQCDnGSWas&libraries=places&callback=initMap"
                         async defer></script>
-
             </div>
         </div>
     </div>
     <div class="row">
         <div class="col-md-6">
             <div class="form-group">
-
-                <h2>Ostatnie recenzje</h2>
+                <h2>
+                    <i class="fa fa-smile"></i>
+                    Ostatnie recenzje
+                </h2>
                 @if (Model.ReviewsList.Count() > 0)
                 {
                     @foreach (var item in Model.ReviewsList)
                     {
                         <div id="reviewCart">
-
                             <p>
                                 @for (int i = 0; i < item.Rating; i++)
                                 {
                                     <span class="fa fa-star checked"></span>
+                                }
+                                @for (int i = (int)item.Rating; i < 5; i++)
+                                {
+                                    <span class="fa fa-star"></span>
                                 }
                             </p>
                             <i>
@@ -152,10 +148,7 @@
         </div>
     </div>
 </form>
-
 @section Scripts{
-
-
 
     @*Datepicker script*@
     <script>

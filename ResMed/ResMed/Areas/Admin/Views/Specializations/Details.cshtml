@@ -1,14 +1,14 @@
 ﻿@model ResMed.Models.Specializations
 
 @{
-    ViewData["Title"] = "Details";
+    ViewData["Title"] = "Szczegóły";
     Layout = "~/Views/Shared/_Layout.cshtml";
 }
 
-<h2>Details</h2>
+<h2>Szczegóły</h2>
 
 <div>
-    <h4>Specializations</h4>
+    <h4>Specjalizacje</h4>
     <hr />
     <dl class="dl-horizontal">
         <dt>
@@ -20,6 +20,6 @@
     </dl>
 </div>
 <div>
-    <a asp-action="Edit" asp-route-id="@Model.Id">Edit</a> |
-    <a asp-action="Index">Back to List</a>
+    <a asp-action="Edit" asp-route-id="@Model.Id" class="btn btn-success">Edycja</a> |
+    <a asp-action="Index" class="btn btn-primary">Powrót</a>
 </div>

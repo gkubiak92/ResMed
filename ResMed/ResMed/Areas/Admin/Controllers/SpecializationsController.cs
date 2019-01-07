@@ -4,6 +4,7 @@ using System.Linq;
 using System.Threading.Tasks;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.EntityFrameworkCore;
 using ResMed.Data;
 using ResMed.Models;
 
@@ -21,11 +22,58 @@ namespace ResMed.Areas.Admin.Controllers
             _db = db;
         }
 
-        public IActionResult Index()
+        //public IActionResult Index()
+        //{
+        //    var SpecializationsList = _db.Specializations.ToList().OrderBy(x => x.Name);
+        //    return View(SpecializationsList);
+        //}
+
+
+
+
+        public async Task<IActionResult> Index(string sortOrder, string currentFilter, string searchString, int? page)
         {
-            var SpecializationsList = _db.Specializations.ToList().OrderBy(x => x.Name);
-            return View(SpecializationsList);
+            ViewData["CurrentSort"] = sortOrder;
+            ViewData["NameSortParm"] = string.IsNullOrEmpty(sortOrder) ? "name_desc" : "";
+            ViewData["IdSortParm"] = sortOrder == "Id" ? "id_desc" : "Id";
+
+            if (searchString != null)
+            {
+                page = 1;
+            }
+            else
+            {
+                searchString = currentFilter;
+            }
+
+            ViewData["CurrentFilter"] = searchString;
+
+            var students = from s in _db.Specializations
+                           select s;
+            if (!string.IsNullOrEmpty(searchString))
+            {
+                students = students.Where(s => s.Name.Contains(searchString));
+            }
+            switch (sortOrder)
+            {
+                case "name_desc":
+                    students = students.OrderByDescending(s => s.Name);
+                    break;
+                case "id":
+                    students = students.OrderBy(s => s.Id);
+                    break;
+                case "id_desc":
+                    students = students.OrderByDescending(s => s.Id);
+                    break;
+                default:
+                    students = students.OrderBy(s => s.Name);
+                    break;
+            }
+
+            int pageSize = 10;
+            return View(await PaginatedList<Specializations>.CreateAsync(students.AsNoTracking(), page ?? 1, pageSize));
         }
+
 
 
         //GET - CREATE specjalization
@@ -70,7 +118,7 @@ namespace ResMed.Areas.Admin.Controllers
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> Edit(int id, Specializations specializations)
         {
-            if(id != specializations.Id)
+            if (id != specializations.Id)
             {
                 return NotFound();
             }

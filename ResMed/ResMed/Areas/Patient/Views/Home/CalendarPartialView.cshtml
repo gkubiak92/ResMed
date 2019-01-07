@@ -6,11 +6,11 @@
     {
         if (Model.TakenHoursInDay.Contains(item))
         {
-            <button class="btn btn-danger" disabled>@item</button>
+            <button class="btn btn-danger" style="margin-bottom: 5px;" disabled>@item</button>
         }
         else
         {
-            <button type="button" onclick="fillInTime(this.textContent)" class="btn btn-success">@item</button>//po kliknięciu odpala sie javascript wypełniający godzinę
+            <button type="button" style="margin-bottom: 5px;" onclick="fillInTime(this.textContent)" class="btn btn-success">@item</button>//po kliknięciu odpala sie javascript wypełniający godzinę
         }
     }
 </div>

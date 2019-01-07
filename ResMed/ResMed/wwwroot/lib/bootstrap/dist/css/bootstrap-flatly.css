@@ -32,7 +32,8 @@ header,
 hgroup,
 main,
 menu,
-nav,
+
+,
 section,
 summary {
     display: block;
@@ -8559,3 +8560,7 @@ tbody tr:nth-child(odd) {
         display: block;
         margin: auto;
     }
+.mainTitle h2{
+    padding-bottom: 10px;
+    border-bottom: 5px solid rgb(32, 201, 151);
+}

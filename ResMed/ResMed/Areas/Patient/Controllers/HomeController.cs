@@ -69,7 +69,8 @@ namespace ResMed.Controllers
                                                     .Where(m => m.Address.Contains(id))
                                                     .Where(s => s.Specializations.Name == spec)
                                                     .ToListAsync();
-                return View(doctorPlaceSpecList.OrderBy(m => m.FirstName));
+                return View(doctorPlaceSpecList.OrderByDescending(doc => doc.AverageRating)
+                .ThenBy(doc => doc.LastName));
             }
 
             if (string.IsNullOrEmpty(id) && !string.IsNullOrEmpty(spec))
@@ -78,7 +79,8 @@ namespace ResMed.Controllers
                                                     .Where(m => m.IsActive == true)
                                                     .Where(s => s.Specializations.Name == spec)
                                                     .ToListAsync();
-                return View(doctorSpecOnlyList.OrderBy(m => m.FirstName));
+                return View(doctorSpecOnlyList.OrderByDescending(doc => doc.AverageRating)
+                .ThenBy(doc => doc.LastName));
             }
 
             if (!string.IsNullOrEmpty(id) && string.IsNullOrEmpty(spec))
@@ -87,14 +89,16 @@ namespace ResMed.Controllers
                                                     .Where(m => m.IsActive == true)
                                                     .Where(m => m.Address.Contains(id))
                                                     .ToListAsync();
-                return View(doctorPlaceOnlyList.OrderBy(m => m.FirstName));
+                return View(doctorPlaceOnlyList.OrderByDescending(doc => doc.AverageRating)
+                .ThenBy(doc => doc.LastName));
             }
 
 
             var doctorList = await _db.Doctors.Include(m => m.Specializations)
                                                     .Where(m => m.IsActive == true)
                                                     .ToListAsync();
-            return View(doctorList.OrderBy(m => m.FirstName));
+            return View(doctorList.OrderByDescending(doc => doc.AverageRating)
+                .ThenBy(doc => doc.LastName));
         }
 
 
@@ -103,15 +107,13 @@ namespace ResMed.Controllers
         {
             var model = await _db.Doctors.Include(m => m.Specializations).Where(m => m.Id == id).FirstOrDefaultAsync();
 
-
             //model.SelectedDate = DateTime.Parse(Date);
             model.SelectedDate = DateTime.ParseExact(Date, "dd-MM-yyyy", null); //parsowanie z konkretnego formatu, bez określenia formatu były problemy na innych stacjach roboczych
-            
 
             var takenHoursList = await (from v in _db.Visits
-                                  where (v.DoctorId == model.Id
-                                  && v.Date.Date == model.SelectedDate.Date)
-                                  select v.Date.TimeOfDay.ToString(@"hh\:mm")).ToListAsync();
+                                        where (v.DoctorId == model.Id
+                                        && v.Date.Date == model.SelectedDate.Date)
+                                        select v.Date.TimeOfDay.ToString(@"hh\:mm")).ToListAsync();
 
             model.TakenHoursInDay = takenHoursList;
 

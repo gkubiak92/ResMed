@@ -5,8 +5,10 @@
     Layout = "~/Views/Shared/_Layout.cshtml";
 }
 
-<h2>Lista lekarzy</h2>
 
+<div class="mainTitle">
+    <h2>Lista lekarzy</h2>
+</div>
 <table class="table">
     <thead>
         <tr>
@@ -24,9 +26,6 @@
             </th>
             <th>
                 @Html.DisplayNameFor(model => model.LicenseNr)
-            </th>
-            <th>
-                @Html.DisplayNameFor(model => model.Description)
             </th>
             <th></th>
         </tr>
@@ -48,9 +47,6 @@
             </td>
             <td>
                 @Html.DisplayFor(modelItem => item.LicenseNr)
-            </td>
-            <td width="50px">
-                @Html.DisplayFor(modelItem => item.Description)
             </td>
             <td>
                 <a asp-action="Edit" asp-route-id="@item.Id" class="btn btn-sm btn-default">Edytuj</a> |

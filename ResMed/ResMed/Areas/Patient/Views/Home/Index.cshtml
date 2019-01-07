@@ -36,7 +36,7 @@
                 <ul class="nav navbar-nav">
                     @if (User.IsInRole("AdminRole"))
                     {
-                        <li><a asp-area="Admin" asp-controller="Doctors" asp-action="Index">Lista doktorów</a></li>
+                        <li><a asp-area="Admin" asp-controller="Doctors" asp-action="Index">Lista lekarzy</a></li>
                         <li><a asp-area="Admin" asp-controller="Specializations" asp-action="Index">Lista specjalizacji</a></li>
                     }
                     @if (User.IsInRole("PatientRole"))

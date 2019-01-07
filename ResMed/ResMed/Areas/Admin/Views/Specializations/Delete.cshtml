@@ -9,7 +9,6 @@
 
 <h3>Czy na pewno chcesz usunąć tą specjalizację?</h3>
 <div>
-    <h4>Specializations</h4>
     <hr />
     <dl class="dl-horizontal">
         <dt>
@@ -22,7 +21,7 @@
     
     <form asp-action="Delete">
         <input type="hidden" asp-for="Id" />
-        <input type="submit" value="Delete" class="btn btn-default" /> |
-        <a asp-action="Index">Back to List</a>
+        <input type="submit" value="Usuń" class="btn btn-danger" /> |
+        <a asp-action="Index" class="btn btn-default">Powrót</a>
     </form>
 </div>
