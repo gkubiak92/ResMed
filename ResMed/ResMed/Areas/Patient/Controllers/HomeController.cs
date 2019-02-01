@@ -276,8 +276,9 @@ namespace ResMed.Controllers
                         $"O godzinie: {vis.Date.TimeOfDay}" +
                         $"Pacjent: {patient.FirstName + " " + patient.LastName}");
 
-            await _emailSender.SendEmailAsync(user.Email, $"Potwierzdenie rezerwacji wizyty",
+            await _emailSender.SendEmailAsync(user.Email, $"Potwierdzenie rezerwacji wizyty",
                 $"Pomyślnie zarezerwowałeś wizytę dnia: {vis.Date.ToShortDateString()}" + "\n" +
+                $"O godzinie: {vis.Date.TimeOfDay}" + "\n" +
                 $"Lekarz: {doc.FirstName + " " + doc.LastName}");
 
 

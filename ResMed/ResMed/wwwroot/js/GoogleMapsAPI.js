@@ -84,6 +84,10 @@ function initMap() {
 
 function geocodeAddress(geocoder, resultsMap) {
     var address = document.getElementById('pac-input').value;
+    //jeśli nie ma wpisanego adresu to domyslnie marker ustawia się na warszawę aby uniknąć komunikatu o INVALID_REQUEST
+    if (!address) {
+        address = "Warszawa, Polska";
+    }
     geocoder.geocode({ 'address': address }, function (results, status) {
         if (status === 'OK') {
             resultsMap.setCenter(results[0].geometry.location);

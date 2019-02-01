@@ -224,41 +224,52 @@ namespace ResMed.Areas.Identity.Pages.Account.Manage
 
             if (Input.LicenseNr != doctor.LicenseNr)
             {
-                int[] digits = Input.LicenseNr.ToString().ToCharArray().Select(x => (int)Char.GetNumericValue(x)).ToArray(); //przekształcenie wpisanego nr PWZ na tablicę intów
-
-                if (Input.LicenseNr.Length != 7)
+                int[] digits;
+                if (string.IsNullOrEmpty(Input.LicenseNr))
                 {
-                    StatusMessage = "Błąd. Numer prawa wykonywania zawodu musi posiadać 7 cyfr.";
-                    return RedirectToPage();
-                }
-                else if (digits[0] == 0)
-                {
-                    StatusMessage = ("Błąd. Numer prawa wykonywania zawodu nie może zaczynać się od cyfry 0.");
-                    return RedirectToPage();
+                    doctor.LicenseNr = "";
+                    doctor.IsActive = false;
+                    _db.Doctors.Update(doctor);
+                    await _db.SaveChangesAsync();
                 }
                 else
                 {
-                    int j = 1;
-                    int sum = 0;
-                    for (int i = 1; i < 7; i++)
+                    digits = Input.LicenseNr.ToString().ToCharArray().Select(x => (int)Char.GetNumericValue(x)).ToArray(); //przekształcenie wpisanego nr PWZ na tablicę intów
+                    
+                    if (Input.LicenseNr.Length != 7)
                     {
-                        sum = sum + (digits[i] * j);
-                        j = j + 1;
+                        StatusMessage = "Błąd. Numer prawa wykonywania zawodu musi posiadać 7 cyfr.";
+                        return RedirectToPage();
                     }
-                    int mod = sum % 11;
-
-                    if (mod != digits[0])
+                    else if (digits[0] == 0)
                     {
-                        StatusMessage = ("Błąd. Nieprawidłowa cyfra kontrolna. Numer prawa wykonywania zawodu jest niepoprawny.");
+                        StatusMessage = ("Błąd. Numer prawa wykonywania zawodu nie może zaczynać się od cyfry 0.");
+                        return RedirectToPage();
                     }
-
                     else
                     {
-                        StatusMessage = ("Pomyślnie ustawiono numer prawa wykonywania zawodu.");
-                        doctor.LicenseNr = Input.LicenseNr;
-                        doctor.IsActive = true;
-                        _db.Doctors.Update(doctor);
-                        await _db.SaveChangesAsync();
+                        int j = 1;
+                        int sum = 0;
+                        for (int i = 1; i < 7; i++)
+                        {
+                            sum = sum + (digits[i] * j);
+                            j = j + 1;
+                        }
+                        int mod = sum % 11;
+
+                        if (mod != digits[0])
+                        {
+                            StatusMessage = ("Błąd. Nieprawidłowa cyfra kontrolna. Numer prawa wykonywania zawodu jest niepoprawny.");
+                        }
+
+                        else
+                        {
+                            StatusMessage = ("Pomyślnie ustawiono numer prawa wykonywania zawodu.");
+                            doctor.LicenseNr = Input.LicenseNr;
+                            doctor.IsActive = true;
+                            _db.Doctors.Update(doctor);
+                            await _db.SaveChangesAsync();
+                        }
                     }
                 }
             }

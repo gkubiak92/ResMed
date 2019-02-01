@@ -1,22 +1,24 @@
 ﻿@model IEnumerable<ResMed.Models.Visits>
-
 @{
     ViewData["Title"] = "Moje wizyty";
     Layout = "~/Views/Shared/_Layout.cshtml";
 }
-
-<div class="col-md-4">
+<br />
+<div class="mainTitle">
     <h2>Moje wizyty</h2>
-    @using (Html.BeginForm(new { @class = "form-group" }))
-    {
-        <p>
-            Znajdź po imieniu:
-            @Html.TextBox("patientSearch", null, null, new { @class = "form-control" })
-            <input type="submit" value="Szukaj" class="btn btn-sm btn-info" />
-        </p>
-
-    }
 </div>
+@using (Html.BeginForm())
+{
+    @*@Html.TextBox("patientSearch", null, null, new { @class = "form-control search-field", placeholder = "Imię lub nazwisko" })*@
+    <div class="col-md-12">
+        <div class="col-md-4">
+            <input type="text" class="form-control search-field" placeholder="Imię lub nazwisko" name="patientSearch" />
+        </div>
+        <div class="col-md-8">
+            <input type="submit" value="Szukaj" class="btn btn-primary btn-info" />
+        </div>
+    </div>
+}
 
 <table class="table">
     <thead>
@@ -36,29 +38,28 @@
     <tbody>
         @foreach (var item in Model)
         {
-        <tr>
-            <td>
-                @Html.DisplayFor(modelItem => item.Date)
-            </td>
-            <td>
-                @Html.DisplayFor(modelItem => item.Date.TimeOfDay)
-            </td>
-            <td>
-                @Html.DisplayFor(modelItem => item.Patient.FirstName)
-                @Html.DisplayFor(modelItem => item.Patient.LastName)
-            </td>
-            <td>
-                @if (item.Date < DateTime.Today)
-                {
-                    <a asp-action="Delete" asp-route-id="@item.Id" class="btn btn-sm btn-default disabled">Anuluj</a>
-                }
-                else
-                {
-                    <a asp-action="Delete" asp-route-id="@item.Id" class="btn btn-sm btn-danger">Anuluj</a>
-                }
-            </td>
-        </tr>
+            <tr>
+                <td>
+                    @Html.DisplayFor(modelItem => item.Date)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.Date.TimeOfDay)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.Patient.FirstName)
+                    @Html.DisplayFor(modelItem => item.Patient.LastName)
+                </td>
+                <td>
+                    @if (item.Date < DateTime.Today)
+                    {
+                        <a asp-action="Delete" asp-route-id="@item.Id" class="btn btn-sm btn-default disabled">Anuluj</a>
+                    }
+                    else
+                    {
+                        <a asp-action="Delete" asp-route-id="@item.Id" class="btn btn-sm btn-danger">Anuluj</a>
+                    }
+                </td>
+            </tr>
         }
     </tbody>
 </table>
-

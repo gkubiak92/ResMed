@@ -104,7 +104,7 @@ namespace ResMed.Areas.Identity.Pages.Account
             //    await _userManager.AddToRoleAsync(adminUser, SD.AdminRole);
 
 
-            returnUrl = returnUrl ?? Url.Content("~/Identity/Account/Manage");
+            returnUrl = returnUrl ?? Url.Content("~/Identity/Account/ConfirmYourEmail");
             if (ModelState.IsValid)
             {
                 var user = new ApplicationUser
